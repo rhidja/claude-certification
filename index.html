@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Claude Code — Certification &amp; Practice</title>
+  <meta name="description" content="Application d’apprentissage non officielle pour maîtriser Claude Code : cours, QCM, évaluation et pratique.">
+  <meta name="theme-color" content="#141413">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Poppins:wght@500;600&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="topbar">
+        <span class="brand"><span class="brand-mark" aria-hidden="true">&gt;_</span> Claude Code · Practice</span>
+        <button type="button" class="btn btn-ghost btn-small" data-action="reset">Réinitialiser</button>
+      </div>
+      <p class="kicker">Claude Code — Certification &amp; Practice</p>
+      <h1>Comprendre. Piloter. Livrer.</h1>
+      <p class="lead">Apprenez à piloter Claude Code comme un développeur professionnel : explorer un projet, planifier, modifier, tester, déboguer et sécuriser, notamment sur des projets PHP/Symfony.</p>
+      <p class="format">Évaluation : 40 questions · 60 min · réussite à 70 % — simulation interne, non officielle · Application non affiliée à Anthropic</p>
+      <nav class="tabs" role="tablist" aria-label="Sections">
+        <button type="button" role="tab" data-tab="programme">Programme</button>
+        <button type="button" role="tab" data-tab="courses">Cours</button>
+        <button type="button" role="tab" data-tab="train">Entraînement</button>
+        <button type="button" role="tab" data-tab="exam">Évaluation</button>
+        <button type="button" role="tab" data-tab="practice">Pratique</button>
+        <button type="button" role="tab" data-tab="progress">Progression</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap" id="view" tabindex="-1"></main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      Application non officielle, non affiliée à Anthropic — aucune certification officielle. Claude est une marque d’Anthropic.
+      Vérifiez les commandes et options dans la documentation officielle de Claude Code, qui évolue rapidement.
+    </div>
+  </footer>
+
+  <script src="data/domains.js"></script>
+  <script src="data/programme.js"></script>
+  <script src="data/courses.js"></script>
+  <script src="data/questions.js"></script>
+  <script src="data/practice.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
