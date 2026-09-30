@@ -101,6 +101,8 @@ pre {
 /* En-tête */
 .site-header { padding: 18px 0 0; border-bottom: 1px solid var(--border); background: var(--bg); }
 .topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 28px; }
+.topbar-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+[hidden] { display: none !important; }
 .brand { font-weight: 600; font-size: .95rem; display: flex; align-items: center; gap: 8px; }
 .brand-mark {
   display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 8px;

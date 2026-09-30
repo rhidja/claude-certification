@@ -155,7 +155,9 @@ data/programme.js   ← objectifs et notions
 data/courses.js     ← cours
 data/questions.js   ← banque de questions
 data/practice.js    ← exercices, missions, projets
-icons/icon.svg      ← favicon
+manifest.webmanifest ← manifeste de l’application installable
+sw.js               ← service worker (cache et mode hors ligne)
+icons/              ← icon.svg (favicon), icon-192.png, icon-512.png, maskable-512.png, apple-touch-icon.png
 ```
 
 ## Ajouter du contenu
@@ -187,3 +189,33 @@ Les fichiers de `data/` sont de simples scripts qui déclarent des constantes gl
 **Fiche pratique** (`data/practice.js`) : `id` (unique et stable), `type` (`exercice`, `mission` ou `projet`), `d`, `o`, `level`, `minutes`, `title`, `context`, `steps`, `prompt`, `criteria`, `solution` (paragraphes séparés par `\n`).
 
 **Évaluation** : le nombre de questions tirées dans chaque domaine est fixé par `examCount` dans `data/domains.js`. Chaque domaine doit contenir au moins deux fois `examCount` questions pour que les évaluations varient.
+
+## Application installable (PWA)
+
+L’application s’installe comme une application native et fonctionne ensuite hors ligne. Pour cela, elle doit être servie en **https** (ou sur `localhost`) : ouverte en `file://`, elle fonctionne normalement mais **ne peut pas s’installer**, car les navigateurs y refusent le manifeste et le service worker. De même, la page du dépôt sur github.com n’exécute pas l’application : il faut passer par GitHub Pages ou un autre hébergement.
+
+### Publier en https
+
+- **GitHub Pages** : dans le dépôt, Settings → Pages → « Deploy from a branch », branche `main`, dossier `/ (root)`. L’application est ensuite disponible à l’adresse `https://<compte>.github.io/<dépôt>/`. Les chemins sont relatifs : elle fonctionne dans ce sous-dossier.
+- **Netlify, Cloudflare Pages, Vercel** : déployez le dossier tel quel, sans commande de build.
+
+### Installer
+
+- **Android (Chrome)** : ouvrez l’adresse https, puis utilisez le bouton « Installer l’app » de l’en-tête, ou le menu ⋮ → « Installer l’application ».
+- **iPhone / iPad (Safari)** : bouton Partager → « Sur l’écran d’accueil ». Safari ne propose pas de bouton d’installation automatique, donc le bouton de l’en-tête n’y apparaît pas.
+- **Ordinateur (Chrome, Edge)** : bouton « Installer l’app » de l’en-tête, ou l’icône d’installation dans la barre d’adresse.
+
+Le bouton « Installer l’app » n’apparaît que lorsque le navigateur autorise l’installation : page en https, service worker actif, application pas encore installée.
+
+### Tester en local
+
+```
+python3 -m http.server 8000
+```
+
+Ouvrez ensuite `http://localhost:8000/`. Dans les outils de développement de Chrome, l’onglet Application → Manifest et Service workers permet de vérifier l’installabilité.
+
+### Mises à jour et ajout de fichiers
+
+- Les fichiers de l’application sont servis « réseau d’abord » : une modification du contenu (cours, questions…) apparaît au prochain chargement en ligne, sans rien toucher.
+- **Si vous ajoutez ou supprimez un fichier**, ajoutez-le à la liste `ASSETS` de `sw.js` (ou retirez-l’en) et incrémentez le nom du cache (`claude-code-practice-v1` → `v2`). Les anciens caches sont supprimés automatiquement à l’activation du nouveau service worker.

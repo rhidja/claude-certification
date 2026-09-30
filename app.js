@@ -901,6 +901,47 @@
     }
   });
 
+  // ---------- Application installable (PWA) ----------
+
+  // En file://, Chrome refuse le manifeste (erreur CORS) et les service workers : on ne les active qu'en http(s).
+  if (location.protocol === "http:" || location.protocol === "https:") {
+    var link = document.createElement("link");
+    link.rel = "manifest";
+    link.href = "manifest.webmanifest";
+    document.head.appendChild(link);
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("sw.js").catch(function () { /* sans service worker, l'app reste utilisable */ });
+      });
+    }
+  }
+
+  var installBtn = document.getElementById("install-btn");
+  var deferredPrompt = null;
+
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (installBtn) installBtn.hidden = false;
+  });
+
+  if (installBtn) {
+    installBtn.addEventListener("click", function () {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function () {
+        deferredPrompt = null;
+        installBtn.hidden = true;
+      }, function () { /* ignoré */ });
+    });
+  }
+
+  window.addEventListener("appinstalled", function () {
+    deferredPrompt = null;
+    if (installBtn) installBtn.hidden = true;
+  });
+
   // ---------- Démarrage ----------
 
   var initial = (location.hash || "").replace("#", "");

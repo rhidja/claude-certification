@@ -6,7 +6,12 @@
   <title>Claude Code — Certification &amp; Practice</title>
   <meta name="description" content="Application d’apprentissage non officielle pour maîtriser Claude Code : cours, QCM, évaluation et pratique.">
   <meta name="theme-color" content="#141413">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="CC Practice">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Poppins:wght@500;600&display=swap">
@@ -17,7 +22,10 @@
     <div class="wrap">
       <div class="topbar">
         <span class="brand"><span class="brand-mark" aria-hidden="true">&gt;_</span> Claude Code · Practice</span>
-        <button type="button" class="btn btn-ghost btn-small" data-action="reset">Réinitialiser</button>
+        <span class="topbar-actions">
+          <button type="button" class="btn btn-primary btn-small" id="install-btn" hidden>Installer l’app</button>
+          <button type="button" class="btn btn-ghost btn-small" data-action="reset">Réinitialiser</button>
+        </span>
       </div>
       <p class="kicker">Claude Code — Certification &amp; Practice</p>
       <h1>Comprendre. Piloter. Livrer.</h1>

@@ -52,7 +52,7 @@ Crée dans ce dossier une application web d'apprentissage selon le cahier des ch
 
 * **Formules mathématiques** : non
 
-* **Application installable** : non
+* **Application installable** : oui
 
 * **Couleur principale** : charte graphique de Claude (orange terre cuite `#d97757` sur fond crème `#faf9f5`, texte `#141413`), voir la section « Design »
 
