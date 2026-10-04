@@ -21,34 +21,27 @@ Crée dans ce dossier une application web d'apprentissage selon le cahier des ch
 
 ## Paramètres
 
-* **Sujet** : Claude Code — Développement assisté par IA
+* **Sujet** : Claude Certified Architect – Foundations (CCAR-F) — concevoir des applications de production avec Claude : Claude Agent SDK, API Claude, Claude Code et Model Context Protocol (MCP).
 
-* **Examen ou objectif visé** : Maîtriser Claude Code de manière professionnelle pour développer, comprendre, refactorer, tester, déboguer et maintenir des applications, notamment des projets PHP/Symfony.
+* **Examen ou objectif visé** : réussir l’examen officiel **Claude Certified Architect – Foundations** (code CCAR-F) du Claude Certification Program d’Anthropic, selon le guide d’examen version 1.0 (juillet 2026).
 
-* **Nom de l'application** : Claude Code — Certification & Practice
+* **Nom de l'application** : Architect Foundations — Préparation CCAR-F
 
-* **Langue du contenu et de l'interface** : français
+* **Langue du contenu et de l'interface** : français. Les termes techniques (`stop_reason`, `tool_choice`, `.mcp.json`, `context: fork`…) restent en anglais, tels qu’ils apparaissent dans le guide.
 
-* **Public** : Développeur ayant des bases en programmation et souhaitant maîtriser Claude Code dans un contexte professionnel.
+* **Public** : architecte de solutions ou développeur senior qui conçoit et met en production des applications avec Claude (environ 6 mois d’expérience pratique de l’API Claude, de l’Agent SDK, de Claude Code et du MCP).
 
-* **Domaines et pondération** :
+* **Domaines et pondération** (blueprint officiel) :
 
-  1. Installation, configuration et prise en main — 10 %
-  2. Interaction avec Claude Code et commandes — 10 %
-  3. Compréhension et exploration d'un projet — 15 %
-  4. Génération, modification et refactoring de code — 15 %
-  5. Tests, debugging et correction d'erreurs — 15 %
-  6. Agents, sous-agents et workflows — 10 %
-  7. MCP, outils et intégrations — 10 %
-  8. CLAUDE.md, règles et personnalisation — 5 %
-  9. Git, sécurité et bonnes pratiques — 5 %
-  10. Automatisation et workflows avancés — 5 %
+  1. Architecture agentique et orchestration — 27 %
+  2. Conception d’outils et intégration MCP — 18 %
+  3. Configuration et workflows Claude Code — 20 %
+  4. Prompt engineering et sortie structurée — 20 %
+  5. Gestion du contexte et fiabilité — 15 %
 
-  Ces 10 domaines pondérés font foi. Les 15 sections du programme détaillé (qui n'ont pas de pondération) y sont rattachées selon la section « Plan de couverture validé » ; chaque objectif garde un renvoi « Prog. §n » vers sa section d'origine.
+* **Format de l'examen réel** (connu avec certitude, section 3 du guide) : 60 questions à choix unique ou à réponses multiples (chaque question indique combien de réponses choisir), 120 minutes, **4 scénarios tirés au hasard parmi 6**, examen surveillé, score de 100 à 1 000, **réussite à 720**. L’examen blanc reproduit ce format : 60 questions, 120 minutes, 4 scénarios tirés parmi 6, score estimé sur 100–1 000 par la formule linéaire `100 + 900 × taux de bonnes réponses`, seuil 720, présenté comme une **estimation** (le vrai score est mis à l’échelle par Anthropic). Répartition (`examCount`) proportionnelle à la pondération : 16 / 11 / 12 / 12 / 9.
 
-* **Format de l'examen réel** : Aucun examen officiel Anthropic à reproduire. L'onglet « Examen blanc » devient **« Évaluation »**, présenté partout comme une **simulation interne, non officielle** : 40 questions, 60 minutes, seuil de réussite 70 %, score affiché en %. Répartition (`examCount`) proportionnelle à la pondération : 4 / 4 / 6 / 6 / 6 / 4 / 4 / 2 / 2 / 2. Les évaluations pratiques (exercices, missions, projets chronométrés) sont dans l'onglet « Pratique ».
-
-* **Volume visé** : 30 cours + 260 QCM + 50 exercices pratiques + 10 missions réelles + 3 projets complets de difficulté progressive. Ces volumes remplacent ceux de l'« Évaluation finale » du programme (150 QCM, 5 exercices, 20 missions) : les 3 projets reprennent ses Niveaux 1, 2 et son Projet final.
+* **Volume visé** : 30 cours (un par objectif) + 300 questions + 30 exercices pratiques (un par objectif) + 6 missions (une par scénario d’examen) + 4 projets (les 4 exercices de préparation de la section 8 du guide).
 
 * **Formules mathématiques** : non
 
@@ -56,64 +49,58 @@ Crée dans ce dossier une application web d'apprentissage selon le cahier des ch
 
 * **Couleur principale** : charte graphique de Claude (orange terre cuite `#d97757` sur fond crème `#faf9f5`, texte `#141413`), voir la section « Design »
 
-* **Programme détaillé** : voir la section « Programme détaillé ».
+* **Programme détaillé** : voir le fichier `programme-ccar-f.md` (traduction fidèle du blueprint du guide d’examen : domaines, scénarios, 30 objectifs avec notions clés, connaissances et compétences, technologies, sujets hors programme, exercices de préparation). Guide original : https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542750%2FClaude+Certified+Architect+%E2%80%93+Foundations+Exam+Guide.pdf
 
-* **Respect du programme** : compléments autorisés, mais chaque fonctionnalité ou notion doit être clairement identifiée comme « essentiel », « avancé » ou « complément ». Ne jamais présenter comme certification officielle Anthropic un examen ou un titre qui ne l'est pas : l'en-tête, le pied de page et le README indiquent « Application non officielle, non affiliée à Anthropic — aucune certification officielle ».
+* **Respect du programme** : **strict pour les questions** (aucune question sur un sujet de la liste « Hors programme » du guide, ni sur une notion absente du programme) ; compléments autorisés dans les cours, étiquetés « Hors programme » (`extra: true`). Chaque notion est identifiée comme « essentiel », « avancé » ou « complément ». L’application est une **préparation indépendante** : elle ne doit jamais se présenter comme officielle ni reproduire les questions d’exemple du guide. L’en-tête, le pied de page et le README indiquent « Préparation indépendante et non officielle, non affiliée à Anthropic. Claude Certified Architect est une certification d’Anthropic ; seuls l’examen officiel et son guide font foi. »
 
 
-## Plan de couverture validé
+## Plan de couverture proposé
 
-Le programme détaillé a été analysé et ce plan est **déjà validé** : ne le soumets pas à nouveau, passe directement à la production du contenu. Les étapes de la section « Avant de coder » ne s'appliquent que si tu détectes une incohérence nouvelle.
+Plan calculé à partir du programme détaillé : **à me présenter pour validation** (étape 4 de « Avant de coder ») avant de produire le contenu. Les questions de chaque domaine sont proportionnelles à la pondération (300 au total), puis réparties entre objectifs selon le nombre de connaissances et compétences. Module Cn = objectif n dans l’ordre du programme.
 
-Chaque objectif regroupe des notions du programme détaillé (intitulés conservés). 31 objectifs, 30 modules (C1 à C30), 260 questions.
-
-| Obj. | Intitulé (sections du programme) | Module(s) | Q |
+| Obj. | Intitulé | Module | Q |
 |---|---|---|---|
-| **D1 Installation, configuration et prise en main — 10 %** ||| **26** |
-| 1.1 | Présentation, cas d'utilisation, fonctionnement agentique, conversation ou agent de développement (§1) | C1 | 8 |
-| 1.2 | Installation, authentification, configuration (§1) | C2 | 9 |
-| 1.3 | Première session, interaction avec un projet, permissions et validation des actions (§1) | C3 | 9 |
-| **D2 Interaction avec Claude Code et commandes — 10 %** ||| **26** |
-| 2.1 | Prompts efficaces : instructions précises, contexte, questions et réponses, contraintes (§2) | C4 | 9 |
-| 2.2 | Commandes slash disponibles et raccourcis (§2) | C5 | 8 |
-| 2.3 | Gestion et reprise des sessions, gestion du contexte, plan avant modification (§2) | C6 | 9 |
-| **D3 Compréhension et exploration d'un projet — 15 %** ||| **39** |
-| 3.1 | Exploration d'un repository, architecture, points d'entrée (§3) | C7 | 10 |
-| 3.2 | Recherche de fichiers et de symboles, compréhension des dépendances (§3) | C8 | 10 |
-| 3.3 | Analyse du code existant, compréhension des tests et de la configuration (§3) | C9 | 9 |
-| 3.4 | Comprendre un environnement Docker : Dockerfile, Docker Compose, services, réseaux, volumes (§12) | C10 | 10 |
-| **D4 Génération, modification et refactoring de code — 15 %** ||| **39** |
-| 4.1 | Création et modification de fichiers, ajout de fonctionnalités, respect des conventions (§4) | C11 | 10 |
-| 4.2 | Refactoring, suppression de code, migration de code (§4, §14) | C12 | 10 |
-| 4.3 | Revue des modifications et bonnes pratiques : analyser, planifier, modifier progressivement, vérifier le diff (§4) | C13 | 9 |
-| 4.4 | Claude Code avec Symfony : PHP, Composer, services, Doctrine, API, Messenger, Security, Console (§11) | C14, C15 | 10 |
-| **D5 Tests, debugging et correction d'erreurs — 15 %** ||| **39** |
-| 5.1 | Lecture des erreurs, analyse des logs, reproduction d'un bug, recherche de la cause racine (§5) | C16 | 10 |
-| 5.2 | Correction, vérification de la correction, prévention des régressions (§5) | C17 | 7 |
-| 5.3 | Tests unitaires, fonctionnels, d'intégration, end-to-end ; génération de tests ; PHPUnit (§6, §11) | C18 | 10 |
-| 5.4 | Exécution des tests, analyse de couverture, correction des tests cassés (§6) | C19 | 6 |
-| 5.5 | Debugging d'un environnement Docker : logs, containers (§12) | C20 | 6 |
-| **D6 Agents, sous-agents et workflows — 10 %** ||| **26** |
-| 6.1 | Concept d'agent, décomposition d'une tâche (§9) | C21 | 8 |
-| 6.2 | Sous-agents, spécialisation des agents (§9) | C22 | 10 |
-| 6.3 | Recherche parallèle ; agents d'analyse du code, de tests, de revue et de documentation (§9) | C23 | 8 |
-| **D7 MCP, outils et intégrations — 10 %** ||| **26** |
-| 7.1 | Concept de MCP : serveur MCP, outils MCP, ressources MCP (§10) | C24 | 9 |
-| 7.2 | Connexion à des services externes, utilisation d'outils externes, authentification (§10) | C25 | 9 |
-| 7.3 | Sécurité des outils, permissions, limitation des capacités (§10) | C25 | 8 |
-| **D8 CLAUDE.md, règles et personnalisation — 5 %** ||| **13** |
-| 8.1 | Rôle de CLAUDE.md, instructions du projet, instructions spécifiques aux sous-projets (§8) | C26 | 6 |
-| 8.2 | Contenu : conventions, architecture, commandes utiles, standards de code, règles de tests, contraintes de sécurité (§8) | C26 | 7 |
-| **D9 Git, sécurité et bonnes pratiques — 5 %** ||| **13** |
-| 9.1 | Git avec Claude Code : diffs, branches, commits, pull requests, revue de code, conflits, bonnes pratiques avant commit (§7) | C27 | 5 |
-| 9.2 | Secrets, clés API, données sensibles, commandes destructives, validation humaine, moindre privilège, injection de contexte, vérification du code généré (§7, §13) | C28 | 8 |
-| **D10 Automatisation et workflows avancés — 5 %** ||| **13** |
-| 10.1 | Planification d'une fonctionnalité, analyse de dette technique, méthodologie professionnelle en 10 étapes (§14, §15) | C29 | 6 |
-| 10.2 | Automatisation répétitive, génération de scripts, documentation automatique, mode non interactif, hooks, commandes personnalisées (§14) | C30 | 7 |
+| **D1 Architecture agentique et orchestration — 27 %** ||| **81** |
+| 1.1 | Concevoir et implémenter des boucles agentiques | C1 | 12 |
+| 1.2 | Orchestrer des systèmes multi-agents coordinateur / sous-agents | C2 | 13 |
+| 1.3 | Configurer l’invocation des sous-agents, le passage de contexte et leur lancement | C3 | 12 |
+| 1.4 | Workflows multi-étapes avec contrôle et transmission | C4 | 12 |
+| 1.5 | Hooks de l’Agent SDK : interception et normalisation | C5 | 11 |
+| 1.6 | Stratégies de décomposition des workflows complexes | C6 | 11 |
+| 1.7 | État des sessions, reprise et dérivation | C7 | 10 |
+| **D2 Conception d’outils et intégration MCP — 18 %** ||| **54** |
+| 2.1 | Interfaces d’outils : descriptions et limites claires | C8 | 12 |
+| 2.2 | Réponses d’erreur structurées pour les outils MCP | C9 | 11 |
+| 2.3 | Répartition des outils entre agents et `tool_choice` | C10 | 11 |
+| 2.4 | Intégrer des serveurs MCP dans Claude Code et les agents | C11 | 11 |
+| 2.5 | Outils intégrés (Read, Write, Edit, Bash, Grep, Glob) | C12 | 9 |
+| **D3 Configuration et workflows Claude Code — 20 %** ||| **60** |
+| 3.1 | Hiérarchie, portée et organisation des CLAUDE.md | C13 | 11 |
+| 3.2 | Commandes slash et skills personnalisés | C14 | 11 |
+| 3.3 | Règles par chemin et chargement conditionnel | C15 | 9 |
+| 3.4 | Plan mode ou exécution directe | C16 | 10 |
+| 3.5 | Raffinement itératif | C17 | 9 |
+| 3.6 | Claude Code dans les pipelines CI/CD | C18 | 10 |
+| **D4 Prompt engineering et sortie structurée — 20 %** ||| **60** |
+| 4.1 | Critères explicites, précision et faux positifs | C19 | 10 |
+| 4.2 | Few-shot prompting | C20 | 10 |
+| 4.3 | Sortie structurée par tool use et schémas JSON | C21 | 12 |
+| 4.4 | Validation, nouvelle tentative et boucles de retour | C22 | 10 |
+| 4.5 | Traitement par lots (Message Batches API) | C23 | 9 |
+| 4.6 | Revue multi-instances et multi-passes | C24 | 9 |
+| **D5 Gestion du contexte et fiabilité — 15 %** ||| **45** |
+| 5.1 | Préserver l’information critique dans les longues interactions | C25 | 9 |
+| 5.2 | Escalade et résolution des ambiguïtés | C26 | 9 |
+| 5.3 | Propagation des erreurs dans les systèmes multi-agents | C27 | 7 |
+| 5.4 | Contexte et exploration d’une grande base de code | C28 | 7 |
+| 5.5 | Revue humaine et calibration de la confiance | C29 | 7 |
+| 5.6 | Provenance de l’information et incertitude | C30 | 6 |
 
-**Pratique** (`data/practice.js`) : 50 exercices répartis selon la pondération (5 / 5 / 7 / 7 / 7 / 5 / 5 / 3 / 3 / 3), 10 missions reprenant celles des §1, 3, 5, 6, 8, 9, 10, 11, 12 et 13, et 3 projets (Niveau 1 Fondamentaux, Niveau 2 Développement Symfony, Projet final sur un projet Symfony défectueux).
+**Scénarios** (`data/scenarios.js`) : les 6 scénarios du guide (S1 à S6, voir `programme-ccar-f.md`). Chaque question est rattachée à un scénario (`s`) cohérent avec les domaines principaux de ce scénario, et son énoncé est une mise en situation dans ce contexte. Viser au moins 40 questions par scénario.
 
-**Exactitude** : Claude Code évolue vite. Ne cite que des commandes, options, fichiers et comportements dont tu es certain (ex. `CLAUDE.md`, plan mode, `/init`, `/compact`, `/clear`, `/resume`, `claude -p`, `claude mcp add`, `.claude/agents/`, hooks, `settings.json`, modes de permission). Dans le doute, décris le principe sans nommer la commande.
+**Pratique** (`data/practice.js`) : 30 exercices (un par objectif), 6 missions (une par scénario, réalisées avec l’API, l’Agent SDK ou Claude Code) et 4 projets reprenant les 4 exercices de préparation de la section 8 du guide.
+
+**Exactitude** : le guide d’examen fait foi pour le contenu évalué (noms d’options, de champs et de fichiers : `fork_session`, `--json-schema`, `.claude/rules/` avec `paths`, `context: fork`, outil Task, `allowedTools`, `isError`…). N’invente aucun chiffre, aucune option ni aucun comportement absent du guide ou de la documentation officielle. Si la documentation actuelle diffère du guide (un outil renommé, par exemple), enseigne la version du guide et signale l’écart dans une section « complément » du cours.
 
 
 ## Avant de coder
@@ -149,6 +136,7 @@ data/programme.js   ← objectifs du programme détaillé
 data/courses.js     ← cours
 data/questions.js   ← banque de questions
 data/practice.js    ← exercices, missions et projets pratiques
+data/scenarios.js   ← scénarios d’examen (si l’examen est organisé en scénarios)
 README.md
 vendor/katex/       ← si formules : KaTeX et ses polices
 manifest.webmanifest, sw.js, icons/   ← si PWA
@@ -189,11 +177,17 @@ const COURSES = [
 ];
 
 // data/questions.js
-// o = objectif évalué par la question.
+// o = objectif évalué par la question ; s = scénario de la question (si scénarios).
 // c = index de la bonne réponse, ou tableau d'index pour une question à réponses multiples.
 const QUESTIONS = [
-  { d: 1, o: "1.1", q: "Énoncé ?", a: ["A", "B", "C", "D"], c: 2, e: "Explication." },
-  { d: 2, o: "2.3", q: "Énoncé ? (Choisissez 2 réponses)", a: ["A", "B", "C", "D", "E"], c: [0, 3], e: "Explication." }
+  { d: 1, o: "1.1", s: "S1", q: "Énoncé ?", a: ["A", "B", "C", "D"], c: 2, e: "Explication." },
+  { d: 2, o: "2.3", s: "S3", q: "Énoncé ? (Choisissez 2 réponses)", a: ["A", "B", "C", "D", "E"], c: [0, 3], e: "Explication." }
+];
+
+// data/scenarios.js (si l’examen est organisé en scénarios)
+// d = domaines principaux du scénario ; context = mise en situation affichée au-dessus des questions.
+const SCENARIOS = [
+  { id: "S1", title: "Titre du scénario", d: [1, 2, 5], context: "Mise en situation commune à toutes les questions du scénario." }
 ];
 ```
 
@@ -252,7 +246,7 @@ L'identifiant de chaque question est calculé dans `app.js` par un hachage de so
 
 ## Fonctionnalités
 
-Navigation par onglets : **Programme**, **Cours**, **Entraînement**, **Évaluation**, **Pratique**, **Progression**. Dans la suite, « examen blanc » désigne l’onglet **Évaluation** (simulation interne, non officielle). Un bouton « Réinitialiser » dans l'en-tête efface toute la progression, après confirmation. Si l'application est installable, un bouton « Installer l’app » apparaît à côté (voir plus bas).
+Navigation par onglets : **Programme**, **Cours**, **Entraînement**, **Examen blanc**, **Pratique**, **Progression**. Si aucun examen officiel n’est visé, l’onglet « Examen blanc » s’appelle « Évaluation » et se présente comme une simulation interne, non officielle. Un bouton « Réinitialiser » dans l'en-tête efface toute la progression, après confirmation. Si l'application est installable, un bouton « Installer l’app » apparaît à côté (voir plus bas).
 
 ### 1. Programme
 - Le programme complet, par domaine (numéro, nom, pondération), puis par objectif (identifiant, intitulé, liste des notions).
@@ -292,6 +286,7 @@ Navigation par onglets : **Programme**, **Cours**, **Entraînement**, **Évaluat
 - **Écran d'accueil** : règles de l'examen (nombre de questions, durée, répartition par domaine, seuil de réussite), bouton « Commencer », historique des examens passés.
 - **Pendant l'examen** :
   - questions tirées selon `examCount` de chaque domaine, puis mélangées ;
+  - si l’examen est organisé en scénarios : tirer au hasard le nombre de scénarios de l’examen réel, puis prendre les questions de chaque domaine parmi celles de ces scénarios (en complétant avec d’autres scénarios si un domaine n’en a pas assez) ; regrouper les questions par scénario et afficher la mise en situation du scénario au-dessus de chaque question ;
   - chronomètre décroissant, qui passe en `--error` sous 5 minutes ; l'examen se termine automatiquement à zéro ;
   - boutons Précédente et Suivante, et bouton « Marquer pour révision » ;
   - grille de numéros cliquables : répondue, marquée, question en cours ;
@@ -308,7 +303,7 @@ Navigation par onglets : **Programme**, **Cours**, **Entraînement**, **Évaluat
 - Les 20 derniers examens sont enregistrés.
 
 ### 4 bis. Pratique
-- Trois sections : **Exercices** (50), **Missions** (10), **Projets** (3), avec un compteur « terminés / total » pour chacune.
+- Trois sections : **Exercices**, **Missions**, **Projets** (volumes fixés par le paramètre « Volume visé »), avec un compteur « terminés / total » pour chacune.
 - Filtres : type, domaine, niveau (« essentiel », « avancé », « complément »), statut (à faire, en cours, terminé).
 - Chaque carte affiche le type, le niveau, la durée conseillée, le domaine et les objectifs (« 1.3 · 2.1 »), et un badge « TERMINÉ ».
 - Vue détaillée d’une fiche :
@@ -382,7 +377,8 @@ Navigation par onglets : **Programme**, **Cours**, **Entraînement**, **Évaluat
    - chaque objectif a au moins un module et au moins 3 questions ;
    - aucun objectif du programme fourni ne manque dans `OBJECTIVES` ;
    - pour chaque notion, cherche sa présence (sans tenir compte de la casse) dans les textes des cours et des questions de son objectif ; liste les notions introuvables et vérifie-les une par une.
-   - pour `PRACTICE` : `id` uniques, `type` et `level` valides, chaque `o` existe et correspond à `d`, `steps`, `criteria` et `solution` non vides, volumes par type (50 / 10 / 3) et répartition des exercices par domaine.
+   - pour `PRACTICE` : `id` uniques, `type` et `level` valides, chaque `o` existe et correspond à `d`, `steps`, `criteria` et `solution` non vides, volumes par type conformes au paramètre « Volume visé » et répartition des exercices par domaine.
+   - si scénarios : chaque `s` existe dans `SCENARIOS`, chaque scénario a assez de questions, et un examen blanc tiré au hasard (simulé 100 fois) respecte toujours `examCount` par domaine.
 3. Lance `node --check app.js`.
 4. Si Playwright ou Chromium est disponible, teste l'application dans un navigateur sans interface :
    - parcours chaque onglet ;
@@ -395,7 +391,7 @@ Navigation par onglets : **Programme**, **Cours**, **Entraînement**, **Évaluat
    - si PWA : sers le dossier en local (`python3 -m http.server`), vérifie que le service worker s'active, que le manifeste est chargé sans erreur, que chaque fichier de `ASSETS` répond 200 et que chaque fichier de l'application figure dans `ASSETS` ; recharge ensuite la page hors ligne et vérifie qu'elle s'affiche avec ses formules ; vérifie aussi qu'en `file://` l'application fonctionne sans erreur ;
    - fais des captures d'écran en 1280 px et en 390 px, et vérifie que `document.documentElement.scrollWidth` ne dépasse pas la largeur de l'écran.
 5. Corrige ce qui ne va pas.
-6. Rédige le `README.md` : utilisation, mention « non officiel, non affilié à Anthropic », tableau des domaines, tableau de couverture du programme (avec le renvoi vers les sections §1 à §15), liste des fiches pratiques, format des données pour ajouter du contenu. Si formules : conventions d'écriture LaTeX. Si PWA : installation sur Android, iPhone/iPad et ordinateur, publication sur un hébergement statique en https (GitHub Pages, Netlify…), test local, et procédure quand on ajoute ou supprime un fichier (mettre à jour `ASSETS` et incrémenter le cache).
+6. Rédige le `README.md` : utilisation, mention « non officiel, non affilié à Anthropic », tableau des domaines, tableau de couverture du programme (avec le renvoi vers la source de chaque objectif), tableau des scénarios si l’examen en comporte, liste des fiches pratiques, format des données pour ajouter du contenu. Si formules : conventions d'écriture LaTeX. Si PWA : installation sur Android, iPhone/iPad et ordinateur, publication sur un hébergement statique en https (GitHub Pages, Netlify…), test local, et procédure quand on ajoute ou supprime un fichier (mettre à jour `ASSETS` et incrémenter le cache).
 7. Termine par :
    - un résumé de ce qui a été créé (volumes par domaine et par objectif) ;
    - les écarts éventuels avec le programme fourni ;
@@ -403,369 +399,10 @@ Navigation par onglets : **Programme**, **Cours**, **Entraînement**, **Évaluat
 
 ## Programme détaillé
 
-*(Colle ton programme ci-dessous, ou écris « voir fichier » si tu l'as déposé dans le dossier. Laisse vide si tu n'en as pas. Format conseillé, mais un copier-coller brut du programme officiel fonctionne aussi :)*
-
-```
-## 1. Découverte de Claude Code
-
-* Présentation de Claude Code
-* Cas d'utilisation
-* Installation
-* Configuration
-* Authentification
-* Première session
-* Comprendre le fonctionnement agentique
-* Interaction avec un projet
-* Différence entre conversation et agent de développement
-* Permissions et validation des actions
-
-### Pratique
-
-* Installer Claude Code
-* Ouvrir un projet existant
-* Lui faire analyser l'architecture
-* Lui demander d'expliquer un fichier
-* Lui demander de proposer une modification
-
----
-
-## 2. Commandes et interaction
-
-* Prompts efficaces
-* Instructions précises
-* Contexte
-* Questions et réponses
-* Commandes slash disponibles
-* Gestion des sessions
-* Reprise d'une session
-* Gestion du contexte
-* Donner des contraintes à Claude
-* Demander un plan avant modification
-
-### Objectif
-
-Savoir transformer une demande vague en tâche précise et contrôlable.
-
----
-
-## 3. Comprendre un projet existant
-
-* Exploration d'un repository
-* Architecture du projet
-* Recherche de fichiers
-* Recherche de symboles
-* Compréhension des dépendances
-* Analyse du code existant
-* Identification des points d'entrée
-* Compréhension des tests
-* Compréhension de la configuration
-
-### Mission pratique
-
-Donner à Claude Code un projet inconnu et lui demander :
-
-1. d'identifier l'architecture ;
-2. d'identifier les principales dépendances ;
-3. d'identifier les risques ;
-4. de proposer un plan d'évolution.
-
----
-
-## 4. Modification et génération de code
-
-* Création de fichiers
-* Modification de fichiers existants
-* Ajout de fonctionnalités
-* Refactoring
-* Suppression de code
-* Migration de code
-* Respect des conventions existantes
-* Revue des modifications avant validation
-
-### Bonnes pratiques
-
-* Faire analyser avant de modifier.
-* Demander un plan.
-* Modifier progressivement.
-* Tester après chaque changement important.
-* Vérifier le diff Git.
-
----
-
-## 5. Debugging
-
-* Lecture des erreurs
-* Analyse des logs
-* Recherche de la cause racine
-* Reproduction d'un bug
-* Correction
-* Vérification de la correction
-* Prévention des régressions
-
-### Mission pratique
-
-Fournir un projet contenant plusieurs bugs et demander à Claude Code :
-
-1. de reproduire les problèmes ;
-2. d'identifier leur cause ;
-3. de proposer une correction ;
-4. d'implémenter la correction ;
-5. d'ajouter les tests nécessaires.
-
----
-
-## 6. Tests
-
-* Tests unitaires
-* Tests fonctionnels
-* Tests d'intégration
-* Tests end-to-end
-* Génération de tests
-* Analyse de couverture
-* Exécution des tests
-* Correction des tests cassés
-* Prévention des régressions
-
-### Mission
-
-Demander à Claude Code d'améliorer la couverture de tests d'un projet existant sans modifier inutilement le comportement métier.
-
----
-
-## 7. Git et workflow professionnel
-
-* Git avec Claude Code
-* Lecture des diffs
-* Branches
-* Commits
-* Pull requests
-* Revue de code
-* Identification des modifications dangereuses
-* Résolution de conflits
-* Bonnes pratiques avant commit
-
-### Sécurité
-
-Claude Code ne doit jamais être considéré comme une autorisation automatique de modifier ou supprimer des données.
-
----
-
-## 8. CLAUDE.md et personnalisation
-
-* Rôle de CLAUDE.md
-* Instructions du projet
-* Conventions de développement
-* Architecture
-* Commandes utiles
-* Standards de code
-* Règles de tests
-* Contraintes de sécurité
-* Instructions spécifiques aux sous-projets
-
-### Mission
-
-Créer un CLAUDE.md professionnel pour un projet Symfony.
-
-Il doit notamment préciser :
-
-* architecture ;
-* conventions PHP ;
-* Symfony ;
-* tests ;
-* Docker ;
-* commandes ;
-* règles Git ;
-* contraintes de sécurité.
-
----
-
-## 9. Agents et sous-agents
-
-* Concept d'agent
-* Décomposition d'une tâche
-* Sous-agents
-* Spécialisation des agents
-* Recherche parallèle
-* Analyse du code
-* Tests
-* Revue
-* Documentation
-
-### Exemple de workflow
-
-Agent principal :
-
-> « Implémente cette fonctionnalité. »
-
-Sous-tâches :
-
-* analyseur → analyse l'architecture ;
-* développeur → implémente ;
-* testeur → écrit les tests ;
-* reviewer → analyse le résultat.
-
----
-
-## 10. MCP
-
-* Concept de MCP
-* Serveur MCP
-* Outils MCP
-* Ressources MCP
-* Connexion à des services externes
-* Utilisation d'outils externes depuis Claude Code
-* Sécurité des outils
-* Permissions
-* Authentification
-* Limitation des capacités
-
-### Mission
-
-Connecter Claude Code à un serveur MCP et lui faire utiliser un outil externe dans une tâche réelle.
-
----
-
-## 11. Claude Code avec Symfony
-
-### Projet pratique principal
-
-Créer et maintenir une application Symfony avec Claude Code.
-
-Compétences :
-
-* Symfony
-* PHP
-* Composer
-* Docker
-* PHPUnit
-* Symfony Console
-* Doctrine
-* API
-* Messenger
-* Security
-* configuration
-* tests
-
-### Missions
-
-* créer une fonctionnalité ;
-* analyser une architecture Symfony ;
-* corriger un bug ;
-* créer un service ;
-* créer un test ;
-* refactorer un service ;
-* optimiser une requête Doctrine ;
-* documenter une API.
-
----
-
-## 12. Claude Code et Docker
-
-* Comprendre un environnement Docker
-* Dockerfile
-* Docker Compose
-* Services
-* Logs
-* Containers
-* Réseaux
-* Volumes
-* Debugging d'un environnement Docker
-
-### Mission
-
-Diagnostiquer un problème dans une application Symfony exécutée avec Docker.
-
----
-
-## 13. Sécurité
-
-* Permissions
-* Secrets
-* Variables d'environnement
-* Clés API
-* Données sensibles
-* Commandes destructives
-* Validation humaine
-* Principe du moindre privilège
-* Risques liés aux outils externes
-* Injection de contexte
-* Vérification du code généré
-
-### Objectif
-
-Savoir identifier lorsqu'une action proposée par Claude Code présente un risque.
-
----
-
-## 14. Workflows avancés
-
-* Planification d'une fonctionnalité
-* Analyse → implémentation → tests → review
-* Refactoring complexe
-* Migration
-* Documentation automatique
-* Analyse de dette technique
-* Génération de scripts
-* Automatisation répétitive
-
----
-
-## 15. Méthodologie professionnelle
-
-Pour toute tâche importante :
-
-1. Comprendre le besoin.
-2. Examiner le projet.
-3. Identifier les contraintes.
-4. Demander un plan.
-5. Valider le plan.
-6. Implémenter progressivement.
-7. Exécuter les tests.
-8. Examiner le diff.
-9. Vérifier la sécurité.
-10. Documenter si nécessaire.
-
----
-
-# Évaluation finale
-
-## Niveau 1 — Fondamentaux
-
-* 50 QCM
-* 5 exercices pratiques
-
-## Niveau 2 — Développement
-
-* 50 QCM
-* 10 missions pratiques
-
-## Niveau 3 — Avancé
-
-* 50 QCM
-* 10 missions complexes
-* MCP
-* agents
-* debugging
-* refactoring
-
-## Projet final
-
-À partir d'un projet Symfony existant et partiellement défectueux :
-
-1. analyser le projet ;
-2. produire un plan ;
-3. identifier les bugs ;
-4. corriger les bugs ;
-5. développer une nouvelle fonctionnalité ;
-6. écrire les tests ;
-7. améliorer la documentation ;
-8. effectuer une revue de sécurité ;
-9. présenter les modifications ;
-10. fournir un résumé technique.
-
-L'évaluation doit mesurer la capacité à **piloter Claude Code efficacement**, et pas seulement la connaissance des commandes.
-
-
-```
+Voir le fichier **`programme-ccar-f.md`** à la racine du dossier. Lis-le en entier : il contient le format de l’examen, les 5 domaines et leur pondération, les 6 scénarios, les 30 objectifs (*task statements*) avec leurs notions clés, connaissances et compétences, l’annexe des technologies, la liste des sujets hors programme et les 4 exercices de préparation.
+
+- Les `notions` de `data/programme.js` reprennent les **Notions clés** de chaque objectif.
+- Chaque connaissance et chaque compétence doit être expliquée dans le cours de l’objectif et testée par au moins une question.
+- Aucun sujet de la liste « Hors programme » ne doit faire l’objet d’une question.
 
 =====
