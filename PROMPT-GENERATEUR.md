@@ -402,6 +402,7 @@ Navigation par onglets : **Programme**, **Cours**, **Entraînement**, **Examen b
 Voir le fichier **`programme-ccar-f.md`** à la racine du dossier. Lis-le en entier : il contient le format de l’examen, les 5 domaines et leur pondération, les 6 scénarios, les 30 objectifs (*task statements*) avec leurs notions clés, connaissances et compétences, l’annexe des technologies, la liste des sujets hors programme et les 4 exercices de préparation.
 
 - Les `notions` de `data/programme.js` reprennent les **Notions clés** de chaque objectif.
+- Les blocs **En pratique** (explications, exemples, pièges classiques) sont des compléments pédagogiques hors guide : utilise-les pour enrichir les cours et les explications des questions, mais ils ne définissent pas ce qui est évalué.
 - Chaque connaissance et chaque compétence doit être expliquée dans le cours de l’objectif et testée par au moins une question.
 - Aucun sujet de la liste « Hors programme » ne doit faire l’objet d’une question.
 
