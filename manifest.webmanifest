@@ -1,7 +1,7 @@
 {
-  "name": "Claude Code — Certification & Practice",
-  "short_name": "CC Practice",
-  "description": "Application d’apprentissage non officielle pour maîtriser Claude Code : cours, QCM, évaluation et pratique.",
+  "name": "Architect Foundations — Préparation CCAR-F",
+  "short_name": "CCAR-F Prep",
+  "description": "Préparation indépendante et non officielle à la certification Claude Certified Architect – Foundations : cours, questions, examen blanc et pratique.",
   "lang": "fr",
   "dir": "ltr",
   "id": "./",

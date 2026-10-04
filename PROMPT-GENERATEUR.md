@@ -54,9 +54,9 @@ Crée dans ce dossier une application web d'apprentissage selon le cahier des ch
 * **Respect du programme** : **strict pour les questions** (aucune question sur un sujet de la liste « Hors programme » du guide, ni sur une notion absente du programme) ; compléments autorisés dans les cours, étiquetés « Hors programme » (`extra: true`). Chaque notion est identifiée comme « essentiel », « avancé » ou « complément ». L’application est une **préparation indépendante** : elle ne doit jamais se présenter comme officielle ni reproduire les questions d’exemple du guide. L’en-tête, le pied de page et le README indiquent « Préparation indépendante et non officielle, non affiliée à Anthropic. Claude Certified Architect est une certification d’Anthropic ; seuls l’examen officiel et son guide font foi. »
 
 
-## Plan de couverture proposé
+## Plan de couverture validé
 
-Plan calculé à partir du programme détaillé : **à me présenter pour validation** (étape 4 de « Avant de coder ») avant de produire le contenu. Les questions de chaque domaine sont proportionnelles à la pondération (300 au total), puis réparties entre objectifs selon le nombre de connaissances et compétences. Module Cn = objectif n dans l’ordre du programme.
+Plan calculé à partir du programme détaillé et **validé** : ne le soumets pas à nouveau, passe directement à la production du contenu. Les questions de chaque domaine sont proportionnelles à la pondération (300 au total), puis réparties entre objectifs selon le nombre de connaissances et compétences. Module Cn = objectif n dans l’ordre du programme.
 
 | Obj. | Intitulé | Module | Q |
 |---|---|---|---|

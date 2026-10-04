@@ -3,9 +3,10 @@
 (function () {
   "use strict";
 
-  var STORE_KEY = "claude-code-practice-v1";
-  var EXAM_MINUTES = 60;
-  var PASS_RATE = 70;
+  var STORE_KEY = "ccar-f-prep-v1";
+  var EXAM_MINUTES = 120;
+  var PASS_SCALED = 720;    // seuil officiel sur l'échelle 100–1 000
+  var SCENARIO_COUNT = 4;   // scénarios tirés par examen (parmi 6)
   var LETTERS = "ABCDE";
 
   // ---------- Utilitaires ----------
@@ -38,6 +39,9 @@
 
   function pct(n, d) { return d ? Math.round((n / d) * 100) : 0; }
 
+  // Estimation linéaire du score sur l'échelle officielle 100–1 000.
+  function scaled(n, d) { return d ? Math.round(100 + 900 * (n / d)) : 100; }
+
   function fmtTime(sec) {
     sec = Math.max(0, Math.round(sec));
     var m = Math.floor(sec / 60), s = sec % 60;
@@ -64,9 +68,13 @@
   var OBJ_BY_ID = {};
   OBJECTIVES.forEach(function (o) { OBJ_BY_ID[o.id] = o; });
 
+  var SCENARIO_LIST = typeof SCENARIOS !== "undefined" ? SCENARIOS : [];
+  var SC_BY_ID = {};
+  SCENARIO_LIST.forEach(function (sc) { SC_BY_ID[sc.id] = sc; });
+
   var QS = QUESTIONS.map(function (q) {
     return {
-      id: "q" + hash(q.q), d: q.d, o: q.o, q: q.q, a: q.a, e: q.e,
+      id: "q" + hash(q.q), d: q.d, o: q.o, s: q.s, q: q.q, a: q.a, e: q.e,
       c: Array.isArray(q.c) ? q.c : [q.c], multi: Array.isArray(q.c)
     };
   });
@@ -197,7 +205,7 @@
     var h = '<div class="card"><div class="obj-head"><h2 style="margin:0">Programme</h2>' +
       '<span class="small muted">' + mastered + " / " + OBJECTIVES.length + " objectifs maîtrisés</span></div>" +
       '<div style="margin-top:12px">' + bar(pct(mastered, OBJECTIVES.length), "good") + "</div>" +
-      '<p class="small muted" style="margin:12px 0 0">Un objectif est « Maîtrisé » avec au moins 80 % de bonnes réponses sur au moins 3 de ses questions, ou si vous cochez « Je maîtrise ». Chaque objectif renvoie à la section d’origine du programme détaillé (§1 à §15).</p></div>';
+      '<p class="small muted" style="margin:12px 0 0">Un objectif est « Maîtrisé » avec au moins 80 % de bonnes réponses sur au moins 3 de ses questions, ou si vous cochez « Je maîtrise ». Chaque objectif correspond à un <i>task statement</i> du guide d’examen CCAR-F.</p></div>';
 
     DOMAINS.forEach(function (d) {
       h += '<div class="section-head"><span class="dnum">D' + d.id + '</span><h2>' + esc(d.name) +
@@ -209,9 +217,9 @@
           return '<button type="button" class="link-btn" data-action="open-course" data-i="' + i + '">C' + (i + 1) + " · " + esc(COURSES[i].title) + "</button>";
         }).join(" · ");
         h += '<div class="obj"><div class="obj-head"><div class="obj-title"><span class="obj-id">' + esc(o.id) + "</span>" + esc(o.title) +
-          (o.src ? ' <span class="muted small">(Prog. ' + esc(o.src) + ")</span>" : "") + "</div>" +
+          (o.en ? ' <span class="muted small"><i lang="en">' + esc(o.en) + "</i></span>" : "") + "</div>" +
           '<span class="pill pill-' + s.key + '">' + s.label + "</span></div>" +
-          '<ul class="notions">' + o.notions.map(function (n) { return "<li>" + esc(n) + "</li>"; }).join("") + "</ul>" +
+          '<ul class="notions">' + o.notions.map(function (n) { return "<li>" + fmt(n) + "</li>"; }).join("") + "</ul>" +
           '<div class="obj-meta"><span>Cours : ' + (courses || "—") + "</span></div>" +
           '<div class="obj-meta" style="margin-top:8px"><span>Précision : ' + (s.st.seen ? pct(s.st.ok, s.st.seen) + " %" : "—") +
           "</span><span>Questions vues : " + s.st.seen + " / " + s.st.total + "</span>" +
@@ -289,6 +297,8 @@
     if (ui.trainObj) {
       var objs = ui.trainObj;
       list = list.filter(function (q) { return objs.indexOf(q.o) !== -1; });
+    } else if (typeof ui.trainDomain === "string") {
+      list = list.filter(function (q) { return q.s === ui.trainDomain; });
     } else if (ui.trainDomain) {
       list = list.filter(function (q) { return q.d === ui.trainDomain; });
     }
@@ -334,7 +344,13 @@
 
   function questionBlock(q, cur, mode) {
     var o = OBJ_BY_ID[q.o];
-    var h = '<div class="q-obj">Objectif ' + esc(q.o) + " · " + esc(o ? o.title : "") + "</div>";
+    var sc = SC_BY_ID[q.s];
+    var h = "";
+    if (sc) {
+      h += '<div class="scenario"><div class="scenario-title">Scénario ' + esc(sc.id) + " · " + esc(sc.title) + "</div>" +
+        '<div class="scenario-text">' + fmt(sc.context) + "</div></div>";
+    }
+    h += '<div class="q-obj">Objectif ' + esc(q.o) + " · " + esc(o ? o.title : "") + "</div>";
     h += '<p class="q-text">' + fmt(q.q) + "</p><div class=\"answers\">";
     cur.perm.forEach(function (orig, k) {
       var cls = "answer";
@@ -381,13 +397,16 @@
       chip("Erreurs à revoir", "errors", null, trainPool("errors").length);
     if (!ui.trainObj) {
       DOMAINS.forEach(function (d) { h += chip("D" + d.id + " · " + d.name, "all", d.id, domainQuestions(d.id).length); });
+      SCENARIO_LIST.forEach(function (sc) {
+        h += chip(sc.id + " · " + sc.title, "all", sc.id, QS.filter(function (q) { return q.s === sc.id; }).length);
+      });
     }
     ui.trainDomain = savedDomain;
     h += "</div>";
 
     if (!train.cur) {
       if (ui.trainFilter === "errors") {
-        h += '<div class="card empty"><h3>Bravo, aucune erreur à revoir !</h3><p class="muted">Toutes vos réponses récentes sont justes dans cette sélection. Continuez avec « Jamais répondues » ou passez une évaluation.</p></div>';
+        h += '<div class="card empty"><h3>Bravo, aucune erreur à revoir !</h3><p class="muted">Toutes vos réponses récentes sont justes dans cette sélection. Continuez avec « Jamais répondues » ou passez un examen blanc.</p></div>';
       } else {
         h += '<div class="card empty"><h3>Aucune question dans cette sélection</h3><p class="muted">Changez de filtre pour continuer.</p></div>';
       }
@@ -440,7 +459,7 @@
     render();
   }
 
-  // ---------- Évaluation (examen blanc) ----------
+  // ---------- Examen blanc ----------
 
   function examTotal() { return DOMAINS.reduce(function (s, d) { return s + d.examCount; }, 0); }
 
@@ -448,36 +467,59 @@
     if (exam && !exam.done) return viewExamRunning();
     if (exam && exam.done) return viewExamResult();
     var total = examTotal();
-    var h = '<div class="card"><h2>Évaluation — simulation interne</h2>' +
-      '<p><b>Format non officiel.</b> Anthropic ne propose pas d’examen correspondant à cette évaluation : il s’agit d’un entraînement interne à l’application, qui ne délivre aucune certification.</p>' +
-      "<ul><li><b>" + total + " questions</b> tirées au hasard selon la pondération des domaines</li><li><b>" + EXAM_MINUTES + " minutes</b>, chronomètre décroissant, fin automatique à zéro</li>" +
-      "<li>Seuil de réussite : <b>" + PASS_RATE + " %</b> (score estimé = pourcentage de bonnes réponses)</li>" +
-      "<li>Aucune correction pendant l’évaluation ; vous pouvez marquer des questions pour y revenir</li>" +
+    var h = '<div class="card"><h2>Examen blanc CCAR-F</h2>' +
+      '<p>Cet examen blanc reproduit le format décrit dans le guide d’examen officiel (version 1.0, juillet 2026). Il reste un <b>entraînement non officiel</b> : seul l’examen surveillé d’Anthropic délivre la certification.</p>' +
+      "<ul><li><b>" + total + " questions</b> à choix unique ou multiple, réparties selon la pondération des domaines</li>" +
+      "<li><b>" + SCENARIO_COUNT + " scénarios</b> tirés au hasard parmi " + SCENARIO_LIST.length + " ; la mise en situation s’affiche au-dessus de chaque question</li>" +
+      "<li><b>" + EXAM_MINUTES + " minutes</b>, chronomètre décroissant, fin automatique à zéro</li>" +
+      "<li>Seuil de réussite : <b>" + PASS_SCALED + " / 1 000</b>. Le score affiché est une estimation linéaire (100 + 900 × taux de bonnes réponses) : le score officiel est mis à l’échelle par Anthropic</li>" +
+      "<li>Aucune correction pendant l’examen ; vous pouvez marquer des questions pour y revenir</li>" +
       "<li>Une question à réponses multiples n’est juste que si toutes les bonnes réponses sont choisies</li></ul>" +
       '<div class="table-wrap"><table><thead><tr><th>Domaine</th><th>Poids</th><th>Questions</th></tr></thead><tbody>' +
       DOMAINS.map(function (d) { return "<tr><td>D" + d.id + " · " + esc(d.name) + "</td><td>" + d.weight + " %</td><td>" + d.examCount + "</td></tr>"; }).join("") +
-      '</tbody></table></div><div class="btn-row"><button type="button" class="btn btn-primary" data-action="exam-start">Commencer l’évaluation</button></div></div>';
+      '</tbody></table></div><div class="btn-row"><button type="button" class="btn btn-primary" data-action="exam-start">Commencer l’examen blanc</button></div></div>';
+    if (SCENARIO_LIST.length) {
+      h += '<div class="card"><h3>Les scénarios</h3><ul>' + SCENARIO_LIST.map(function (sc) {
+        return "<li><b>" + esc(sc.id) + " · " + esc(sc.title) + '</b> <span class="muted small">(domaines ' + sc.d.join(", ") + ")</span></li>";
+      }).join("") + "</ul></div>";
+    }
     h += examHistory();
     return h;
   }
 
   function examHistory() {
-    if (!state.exams.length) return '<div class="card"><h3>Historique</h3><p class="muted" style="margin:0">Aucune évaluation passée pour l’instant.</p></div>';
-    return '<div class="card"><h3>Historique des évaluations</h3><div class="table-wrap"><table><thead><tr><th>Date</th><th>Score</th><th>Bonnes réponses</th><th>Résultat</th></tr></thead><tbody>' +
+    if (!state.exams.length) return '<div class="card"><h3>Historique</h3><p class="muted" style="margin:0">Aucun examen blanc passé pour l’instant.</p></div>';
+    return '<div class="card"><h3>Historique des examens blancs</h3><div class="table-wrap"><table><thead><tr><th>Date</th><th>Score estimé</th><th>Bonnes réponses</th><th>Résultat</th></tr></thead><tbody>' +
       state.exams.slice().reverse().map(function (x) {
-        return "<tr><td>" + fmtDate(x.date) + "</td><td>" + x.score + " %</td><td>" + x.correct + " / " + x.total + '</td><td class="' +
+        return "<tr><td>" + fmtDate(x.date) + "</td><td>" + x.score + " / 1 000</td><td>" + x.correct + " / " + x.total + '</td><td class="' +
           (x.passed ? "result-pass" : "result-fail") + '">' + (x.passed ? "Réussi" : "Non réussi") + "</td></tr>";
       }).join("") + "</tbody></table></div></div>";
   }
 
-  function startExam() {
-    var ids = [];
+  // Tire les scénarios, puis les questions de chaque domaine parmi ces scénarios
+  // (complétées par d'autres scénarios si un domaine n'en a pas assez), regroupées par scénario.
+  function drawExam() {
+    var chosen = shuffle(SCENARIO_LIST.map(function (sc) { return sc.id; })).slice(0, SCENARIO_COUNT);
+    var picked = [];
     DOMAINS.forEach(function (d) {
-      shuffle(domainQuestions(d.id)).slice(0, d.examCount).forEach(function (q) { ids.push(q.id); });
+      var pool = domainQuestions(d.id);
+      var inside = shuffle(pool.filter(function (q) { return chosen.indexOf(q.s) !== -1; }));
+      var outside = shuffle(pool.filter(function (q) { return chosen.indexOf(q.s) === -1; }));
+      inside.concat(outside).slice(0, d.examCount).forEach(function (q) { picked.push(q); });
     });
-    ids = shuffle(ids);
+    var order = chosen.slice();
+    picked.forEach(function (q) { if (order.indexOf(q.s) === -1) order.push(q.s); });
+    picked = shuffle(picked);
+    picked.sort(function (a, b) { return order.indexOf(a.s) - order.indexOf(b.s); });
+    return { scenarios: chosen, ids: picked.map(function (q) { return q.id; }) };
+  }
+
+  function startExam() {
+    var draw = drawExam();
+    var ids = draw.ids;
     exam = {
       ids: ids,
+      scenarios: draw.scenarios,
       perms: ids.map(function (id) { return shuffle(Q_BY_ID[id].a.map(function (_, k) { return k; })); }),
       sel: ids.map(function () { return []; }),
       flags: ids.map(function () { return false; }),
@@ -509,7 +551,7 @@
       h += '<button type="button" class="' + cls + '" data-action="exam-go" data-k="' + k + '" aria-label="Question ' + (k + 1) + '">' + (k + 1) + "</button>";
     });
     h += '</div><div class="legend"><span>▣ répondue</span><span style="color:var(--orange-text)">● marquée</span><span>▢ en cours (bordure orange)</span></div>' +
-      '<div class="btn-row" style="margin-top:12px"><button type="button" class="btn btn-primary btn-small" data-action="exam-finish">Terminer l’évaluation</button></div></div></aside></div>';
+      '<div class="btn-row" style="margin-top:12px"><button type="button" class="btn btn-primary btn-small" data-action="exam-finish">Terminer l’examen</button></div></div></aside></div>';
     return h;
   }
 
@@ -534,7 +576,7 @@
       if (exam.sel[k].length < q.c.length) unanswered.push(k + 1);
       if (exam.flags[k]) flagged.push(k + 1);
     });
-    var msg = "Terminer l’évaluation ?";
+    var msg = "Terminer l’examen blanc ?";
     if (unanswered.length) msg += "\n\nQuestions sans réponse complète (" + unanswered.length + ") : " + unanswered.join(", ");
     if (flagged.length) msg += "\n\nQuestions marquées pour révision (" + flagged.length + ") : " + flagged.join(", ");
     if (window.confirm(msg)) finishExam();
@@ -552,10 +594,10 @@
       if (ok) { correct++; byDomain[q.d].ok++; } else wrong.push(k);
       if (chosen.length) recordAnswer(id, ok);
     });
-    var score = pct(correct, exam.ids.length);
+    var score = scaled(correct, exam.ids.length);
     exam.done = true;
-    exam.result = { correct: correct, score: score, passed: score >= PASS_RATE, byDomain: byDomain, wrong: wrong };
-    state.exams.push({ date: Date.now(), score: score, correct: correct, total: exam.ids.length, passed: score >= PASS_RATE });
+    exam.result = { correct: correct, score: score, rate: pct(correct, exam.ids.length), passed: score >= PASS_SCALED, byDomain: byDomain, wrong: wrong };
+    state.exams.push({ date: Date.now(), score: score, correct: correct, total: exam.ids.length, passed: score >= PASS_SCALED });
     state.exams = state.exams.slice(-20);
     save();
     render();
@@ -564,10 +606,11 @@
 
   function viewExamResult() {
     var r = exam.result;
-    var h = '<div class="card"><div class="small muted">Résultat de l’évaluation (simulation interne, non officielle)</div>' +
-      '<div class="score-big ' + (r.passed ? "result-pass" : "result-fail") + '">' + r.score + " %</div>" +
+    var h = '<div class="card"><div class="small muted">Résultat de l’examen blanc (entraînement non officiel)</div>' +
+      '<div class="score-big ' + (r.passed ? "result-pass" : "result-fail") + '">' + r.score + ' <span class="small muted">/ 1 000</span></div>' +
       "<p><b class=\"" + (r.passed ? "result-pass" : "result-fail") + '">' + (r.passed ? "Réussi" : "Non réussi") + "</b> — " + r.correct + " / " + exam.ids.length +
-      " bonnes réponses. Seuil : " + PASS_RATE + " %. Ce score est une estimation linéaire (pourcentage de bonnes réponses), sans valeur officielle.</p></div>";
+      " bonnes réponses (" + r.rate + " %). Seuil : " + PASS_SCALED + " / 1 000. Score estimé par la formule linéaire 100 + 900 × taux de bonnes réponses ; le score officiel est mis à l’échelle par Anthropic.</p>" +
+      (exam.scenarios && exam.scenarios.length ? '<p class="small muted" style="margin:0">Scénarios tirés : ' + exam.scenarios.map(function (id) { return esc(id) + " · " + esc(SC_BY_ID[id] ? SC_BY_ID[id].title : ""); }).join(" ; ") + "</p>" : "") + "</div>";
 
     h += '<div class="card"><h3>Résultat par domaine</h3>';
     DOMAINS.forEach(function (d) {
@@ -605,8 +648,8 @@
       });
       h += "</details>";
     }
-    h += '<div class="btn-row"><button type="button" class="btn btn-primary" data-action="exam-start">Nouvelle évaluation</button>' +
-      '<button type="button" class="btn btn-ghost" data-action="exam-home">Retour à l’accueil de l’évaluation</button>' +
+    h += '<div class="btn-row"><button type="button" class="btn btn-primary" data-action="exam-start">Nouvel examen blanc</button>' +
+      '<button type="button" class="btn btn-ghost" data-action="exam-home">Retour à l’accueil de l’examen</button>' +
       '<button type="button" class="btn btn-ghost" data-action="train-errors">Revoir mes erreurs</button></div>';
     return h;
   }
@@ -656,7 +699,7 @@
 
   function viewPracticeList() {
     var h = '<div class="obj-head" style="margin-bottom:10px"><h2 style="margin:0">Pratique</h2></div>';
-    h += '<div class="note">Ces fiches se réalisent dans un vrai projet, avec Claude Code ouvert dans votre terminal ou votre IDE. Évaluez-vous sur votre capacité à <b>piloter</b> l’outil (contexte, contraintes, plan, vérification du diff et des tests), pas seulement sur le résultat obtenu.</div>';
+    h += '<div class="note">Ces fiches se réalisent pour de vrai : avec l’API Claude, le Claude Agent SDK, Claude Code et des serveurs MCP. Évaluez-vous sur vos <b>décisions d’architecture</b> (choix et compromis, garde-fous, vérification), pas seulement sur le fait que « ça marche ».</div>';
     h += '<div class="stats">';
     ["exercice", "mission", "projet"].forEach(function (t) {
       var list = PRACTICE.filter(function (p) { return p.type === t; });
@@ -766,7 +809,7 @@
       '<div class="stat"><b>' + read + " / " + COURSES.length + "</b><span>cours lus</span></div>" +
       '<div class="stat"><b>' + all.seen + " / " + QS.length + "</b><span>questions vues</span></div>" +
       '<div class="stat"><b>' + prDone + " / " + PRACTICE.length + "</b><span>fiches pratiques terminées</span></div>" +
-      '<div class="stat"><b>' + (best >= 0 ? best + " %" : "—") + "</b><span>meilleur score d’évaluation</span></div></div>";
+      '<div class="stat"><b>' + (best >= 0 ? best + " / 1 000" : "—") + "</b><span>meilleur score d’examen blanc</span></div></div>";
 
     h += '<div class="card"><h3>Précision par domaine</h3>';
     DOMAINS.forEach(function (d) {
@@ -786,7 +829,7 @@
     worked.sort(function (a, b) { return a.acc - b.acc; });
     var prio = worked.slice(0, 3).concat(fresh.slice(0, Math.max(0, 5 - Math.min(3, worked.length))));
     h += '<div class="card"><h3>Priorité de révision</h3>';
-    if (!prio.length) h += '<p class="muted" style="margin:0">Tous les objectifs sont maîtrisés. Passez une évaluation pour le confirmer.</p>';
+    if (!prio.length) h += '<p class="muted" style="margin:0">Tous les objectifs sont maîtrisés. Passez un examen blanc pour le confirmer.</p>';
     else {
       h += '<ul class="priority">' + prio.map(function (x) {
         return "<li><b>" + esc(x.o.id) + "</b> " + esc(x.o.title) + ' <span class="muted small">' + (x.acc != null ? "— précision " + pct(x.acc * 100, 100) + " %" : "— jamais abordé") +
@@ -816,7 +859,7 @@
 
     switch (a) {
       case "reset":
-        if (window.confirm("Effacer toute votre progression (réponses, cours lus, évaluations, fiches pratiques) ?")) {
+        if (window.confirm("Effacer toute votre progression (réponses, cours lus, examens blancs, fiches pratiques) ?")) {
           state = emptyState();
           save();
           exam = null; train = null; prTimer = null; stopTick();
@@ -830,7 +873,7 @@
       case "clear-obj": ui.trainObj = null; newTrain(); render(); break;
       case "train-filter": {
         var d = el.getAttribute("data-d");
-        setTrainFilter(el.getAttribute("data-f"), d ? +d : null);
+        setTrainFilter(el.getAttribute("data-f"), d ? (d.charAt(0) === "S" ? d : +d) : null);
         break;
       }
       case "train-errors": ui.trainObj = null; setTrainFilter("errors", null); break;

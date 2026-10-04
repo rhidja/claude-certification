@@ -1,7 +1,7 @@
-/* Service worker de Claude Code — Certification & Practice.
+/* Service worker de Architect Foundations — Préparation CCAR-F.
    Incrémenter CACHE à chaque ajout ou suppression de fichier dans ASSETS. */
-const CACHE = "claude-code-practice-v1";
-const FONT_CACHE = "claude-code-practice-fonts-v1";
+const CACHE = "ccar-f-prep-v1";
+const FONT_CACHE = "ccar-f-prep-fonts-v1";
 
 const ASSETS = [
   "./",
@@ -14,6 +14,7 @@ const ASSETS = [
   "data/courses.js",
   "data/questions.js",
   "data/practice.js",
+  "data/scenarios.js",
   "icons/icon.svg",
   "icons/icon-192.png",
   "icons/icon-512.png",
