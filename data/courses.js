@@ -4,25 +4,40 @@
 const COURSES = [
   // ===== D1 — Architecture agentique et orchestration =====
   {
-    d: 1, o: ["1.1"],
+    d: 1,
+    o: ["1.1"],
     title: "Boucles agentiques",
-    summary: "Le cycle requête → outil → résultat → requête, piloté par stop_reason, et les anti-patterns d’arrêt.",
+    summary: "Le cycle requête → outil → résultat → requête, piloté par stop_reason, avec un exemple complet et la trace des messages.",
     sections: [
-      { h: "Cycle de la boucle agentique", lvl: "essentiel",
-        p: "Une boucle agentique répète quatre temps : <b>envoyer la requête</b> à Claude avec la liste des outils, <b>inspecter <code>stop_reason</code></b>, <b>exécuter les outils demandés</b>, puis <b>renvoyer leurs résultats</b> pour l’itération suivante. Les deux valeurs à connaître sont <code>tool_use</code> et <code>end_turn</code> : <code>\"tool_use\"</code> signifie que le modèle attend le résultat d’un ou plusieurs outils, <code>\"end_turn\"</code> qu’il a terminé sa réponse.",
-        code: "messages = [{\"role\": \"user\", \"content\": demande}]\nwhile True:\n    r = client.messages.create(model=MODEL, max_tokens=2048,\n                               tools=TOOLS, messages=messages)\n    messages.append({\"role\": \"assistant\", \"content\": r.content})\n    if r.stop_reason != \"tool_use\":      # \"end_turn\" : réponse finale\n        break\n    resultats = [executer(b) for b in r.content if b.type == \"tool_use\"]\n    messages.append({\"role\": \"user\", \"content\": resultats})  # blocs tool_result" },
-      { h: "Résultats d’outils dans l’historique", lvl: "essentiel",
-        points: [
-          "Chaque résultat est renvoyé comme bloc <code>tool_result</code> rattaché au <code>tool_use_id</code> de l’appel, dans un message <code>user</code> ajouté à l’historique.",
-          "C’est ce qui permet au modèle de <b>raisonner sur l’action suivante</b> à partir d’informations nouvelles.",
-          "Oublier d’ajouter un résultat ou repartir d’un historique tronqué casse le raisonnement : le modèle redemande l’outil ou invente." ] },
-      { h: "Décision pilotée par le modèle", lvl: "essentiel",
-        p: "Dans une boucle agentique, c’est <b>Claude qui choisit</b> l’outil suivant selon le contexte. C’est la différence avec un arbre de décision ou une séquence d’outils préconfigurée, où le code impose l’ordre. Les deux approches coexistent : on laisse le modèle décider, et on n’impose un ordre par le code que là où une règle métier l’exige (voir l’objectif 1.4)." },
-      { h: "Anti-patterns de termination", lvl: "essentiel",
-        points: [
-          "Analyser le <b>texte</b> de la réponse (« j’ai fini », « terminé ») pour décider d’arrêter : fragile, le signal fiable est <code>stop_reason</code>.",
-          "Utiliser un <b>plafond arbitraire d’itérations</b> comme mécanisme d’arrêt principal : il coupe des tâches légitimes ; un plafond n’est qu’un garde-fou de sécurité.",
-          "Considérer la <b>présence de texte</b> de l’assistant comme signe de fin : une réponse peut contenir du texte <i>et</i> un appel d’outil." ] }
+      {
+        h: "Cycle de la boucle agentique",
+        lvl: "essentiel",
+        p: ["Une boucle agentique répète quatre temps : <b>envoyer la requête</b> à Claude avec la liste des outils, <b>inspecter <code>stop_reason</code></b>, <b>exécuter les outils demandés</b>, puis <b>renvoyer leurs résultats</b> pour l’itération suivante. Les deux valeurs à connaître sont <code>tool_use</code> et <code>end_turn</code> : <code>\"tool_use\"</code> signifie que le modèle attend le résultat d’un ou plusieurs outils, <code>\"end_turn\"</code> qu’il a terminé sa réponse.", "Point essentiel : <b>Claude n’exécute jamais lui-même un outil</b>. Il produit une <i>demande</i> d’appel (un bloc <code>tool_use</code> avec un nom et des paramètres conformes au schéma) ; c’est votre code qui l’exécute, puis lui renvoie le résultat. C’est ce qui permet de contrôler, journaliser ou bloquer chaque action.", "Le code ci-dessous est un exemple complet et exécutable (SDK Python <code>anthropic</code>) avec un outil de recherche de commande. Seuls l’identifiant du modèle et la « base » <code>COMMANDES</code> sont à remplacer par les vôtres."],
+        points: ["<b>1. Envoyer</b> : <code>client.messages.create(model, max_tokens, tools, messages)</code>. La liste <code>tools</code> décrit chaque outil ; <code>messages</code> contient tout l’historique, car l’API ne garde aucun état entre deux appels.", "<b>2. Inspecter</b> <code>r.stop_reason</code> : s’il vaut <code>\"tool_use\"</code>, la réponse contient un ou plusieurs blocs <code>tool_use</code> ; sinon (<code>\"end_turn\"</code>), c’est la réponse finale.", "<b>3. Exécuter</b> chaque bloc <code>tool_use</code> : lire <code>b.name</code> et <code>b.input</code>, appeler votre fonction, produire un bloc <code>tool_result</code> qui reprend <code>b.id</code> dans <code>tool_use_id</code>.", "<b>4. Renvoyer</b> : ajouter d’abord la réponse de l’assistant telle quelle à l’historique, puis <b>un seul</b> message <code>user</code> contenant tous les blocs <code>tool_result</code> de ce tour, et recommencer."],
+        code: "import json\nimport anthropic\n\nclient = anthropic.Anthropic()          # lit la clé dans ANTHROPIC_API_KEY\nMODEL = \"<identifiant du modèle>\"\n\n# 1. Les outils : nom, description (lue par le modèle), schéma des paramètres\nTOOLS = [{\n    \"name\": \"lookup_order\",\n    \"description\": \"Recherche une commande par numéro (4 à 8 chiffres). \"\n                   \"Renvoie le statut et la date de livraison prévue.\",\n    \"input_schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n            \"order_id\": {\"type\": \"string\", \"description\": \"Numéro de commande, ex. 7781\"}\n        },\n        \"required\": [\"order_id\"],\n    },\n}]\n\nCOMMANDES = {\"7781\": {\"statut\": \"expédiée\", \"livraison\": \"2026-03-14\"}}\n\n# 2. L’exécution : votre code, jamais le modèle, lance réellement l’outil\ndef executer(bloc):\n    \"\"\"Reçoit un bloc tool_use, renvoie le bloc tool_result correspondant.\"\"\"\n    if bloc.name == \"lookup_order\":\n        commande = COMMANDES.get(bloc.input[\"order_id\"])\n        contenu = json.dumps(commande, ensure_ascii=False) if commande else \"Aucune commande avec ce numéro.\"\n        return {\"type\": \"tool_result\", \"tool_use_id\": bloc.id, \"content\": contenu}\n    return {\"type\": \"tool_result\", \"tool_use_id\": bloc.id,\n            \"is_error\": True, \"content\": f\"Outil inconnu : {bloc.name}\"}\n\n# 3. La boucle\ndef agent(demande, max_iterations=20):\n    messages = [{\"role\": \"user\", \"content\": demande}]\n    for _ in range(max_iterations):            # garde-fou, pas le mécanisme d’arrêt\n        r = client.messages.create(model=MODEL, max_tokens=2048,\n                                   tools=TOOLS, messages=messages)\n        messages.append({\"role\": \"assistant\", \"content\": r.content})\n        if r.stop_reason != \"tool_use\":        # \"end_turn\" : réponse finale\n            return \"\".join(b.text for b in r.content if b.type == \"text\")\n        resultats = [executer(b) for b in r.content if b.type == \"tool_use\"]\n        messages.append({\"role\": \"user\", \"content\": resultats})   # un seul message\n    raise RuntimeError(\"Plafond d’itérations atteint : comportement à analyser\")\n\nprint(agent(\"Où en est ma commande 7781 ?\"))"
+      },
+      {
+        h: "Exemple pas à pas : ce qui circule dans messages",
+        lvl: "essentiel",
+        p: ["Voici le contenu de <code>messages</code> pour la question « Où en est ma commande 7781 ? ». Deux allers-retours suffisent : un pour l’appel d’outil, un pour la réponse finale.", "Si Claude demande plusieurs outils dans la même réponse (par exemple <code>get_customer</code> et <code>lookup_order</code>), votre code les exécute tous et renvoie <b>tous les <code>tool_result</code> dans le même message</b>, chacun avec son <code>tool_use_id</code>. Une erreur d’outil se signale par un <code>tool_result</code> avec <code>\"is_error\": true</code> et un message explicite : le modèle peut alors corriger son appel ou changer d’approche."],
+        points: ["La réponse 1 contient <b>à la fois du texte et un appel d’outil</b> : c’est pourquoi la présence de texte ne signifie pas que la tâche est terminée.", "Le <code>tool_use_id</code> du tour 2 doit reprendre exactement l’<code>id</code> du bloc <code>tool_use</code> : c’est ainsi que le modèle relie chaque résultat à sa demande.", "On ajoute la réponse de l’assistant à l’historique <b>avant</b> les résultats : l’ordre des messages doit rester assistant (appel) puis user (résultat)."],
+        code: "# Tour 1 : la demande\n{\"role\": \"user\", \"content\": \"Où en est ma commande 7781 ?\"}\n\n# Réponse 1 : stop_reason = \"tool_use\"\n{\"role\": \"assistant\", \"content\": [\n  {\"type\": \"text\", \"text\": \"Je consulte votre commande.\"},\n  {\"type\": \"tool_use\", \"id\": \"toolu_01\", \"name\": \"lookup_order\",\n   \"input\": {\"order_id\": \"7781\"}}\n]}\n\n# Tour 2 : votre code renvoie le résultat, rattaché à l’id de l’appel\n{\"role\": \"user\", \"content\": [\n  {\"type\": \"tool_result\", \"tool_use_id\": \"toolu_01\",\n   \"content\": \"{\\\"statut\\\": \\\"expédiée\\\", \\\"livraison\\\": \\\"2026-03-14\\\"}\"}\n]}\n\n# Réponse 2 : stop_reason = \"end_turn\"\n{\"role\": \"assistant\", \"content\": [\n  {\"type\": \"text\", \"text\": \"Votre commande 7781 a été expédiée, livraison prévue le 14 mars.\"}\n]}"
+      },
+      {
+        h: "Résultats d’outils dans l’historique",
+        lvl: "essentiel",
+        points: ["Chaque résultat est renvoyé comme bloc <code>tool_result</code> rattaché au <code>tool_use_id</code> de l’appel, dans un message <code>user</code> ajouté à l’historique.", "C’est ce qui permet au modèle de <b>raisonner sur l’action suivante</b> à partir d’informations nouvelles.", "Oublier d’ajouter un résultat ou repartir d’un historique tronqué casse le raisonnement : le modèle redemande l’outil ou invente."]
+      },
+      {
+        h: "Décision pilotée par le modèle",
+        lvl: "essentiel",
+        p: "Dans une boucle agentique, c’est <b>Claude qui choisit</b> l’outil suivant selon le contexte. C’est la différence avec un arbre de décision ou une séquence d’outils préconfigurée, où le code impose l’ordre. Les deux approches coexistent : on laisse le modèle décider, et on n’impose un ordre par le code que là où une règle métier l’exige (voir l’objectif 1.4)."
+      },
+      {
+        h: "Anti-patterns de termination",
+        lvl: "essentiel",
+        points: ["Analyser le <b>texte</b> de la réponse (« j’ai fini », « terminé ») pour décider d’arrêter : fragile, le signal fiable est <code>stop_reason</code>.", "Utiliser un <b>plafond arbitraire d’itérations</b> comme mécanisme d’arrêt principal : il coupe des tâches légitimes ; un plafond n’est qu’un garde-fou de sécurité, dont l’atteinte doit être traitée comme une anomalie.", "Considérer la <b>présence de texte</b> de l’assistant comme signe de fin : une réponse peut contenir du texte <i>et</i> un appel d’outil (voir l’exemple pas à pas).", "<i>Complément</i> : <code>stop_reason</code> peut prendre d’autres valeurs, comme <code>max_tokens</code> quand la réponse a été coupée par la limite de longueur. En production, traitez ce cas explicitement (augmenter <code>max_tokens</code> ou relancer) au lieu de le confondre avec une réponse terminée."]
+      }
     ]
   },
   {

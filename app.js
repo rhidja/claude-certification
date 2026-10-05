@@ -271,7 +271,7 @@
       h += '<div class="card section"><h3>' + esc(s.h) + " " + levelPill(s.lvl) +
         (s.extra ? ' <span class="pill tag-extra">Hors programme</span>' : "") + "</h3>";
       // Le texte des cours est rédigé par l'auteur et peut contenir <b> et <code>.
-      if (s.p) h += "<p>" + s.p + "</p>";
+      if (s.p) h += (Array.isArray(s.p) ? s.p : [s.p]).map(function (t) { return "<p>" + t + "</p>"; }).join("");
       if (s.points) h += "<ul>" + s.points.map(function (p) { return "<li>" + p + "</li>"; }).join("") + "</ul>";
       if (s.code) h += "<pre>" + esc(s.code) + "</pre>";
       h += "</div>";
