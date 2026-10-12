@@ -1,7 +1,7 @@
 {
-  "name": "Claude Code — Certification & Practice",
-  "short_name": "CC Practice",
-  "description": "Application d’apprentissage non officielle pour maîtriser Claude Code : cours, QCM, évaluation et pratique.",
+  "name": "Préparation aux certifications Claude",
+  "short_name": "Claude Prep",
+  "description": "Préparation indépendante et non officielle aux certifications Claude : cours, questions, examens blancs et pratique.",
   "lang": "fr",
   "dir": "ltr",
   "id": "./",
