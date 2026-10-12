@@ -358,6 +358,12 @@
         if (s.p) h += (Array.isArray(s.p) ? s.p : [s.p]).map(function (t) { return "<p>" + t + "</p>"; }).join("");
         if (s.points) h += "<ul>" + s.points.map(function (p) { return "<li>" + p + "</li>"; }).join("") + "</ul>";
         if (s.code) h += "<pre>" + esc(s.code) + "</pre>";
+        // blocks : contenu ordonné (paragraphes, listes et code dans l'ordre de lecture).
+        if (s.blocks) s.blocks.forEach(function (b) {
+          if (b.p) h += "<p>" + b.p + "</p>";
+          if (b.points) h += "<ul>" + b.points.map(function (t) { return "<li>" + t + "</li>"; }).join("") + "</ul>";
+          if (b.code) h += "<pre>" + esc(b.code) + "</pre>";
+        });
         h += "</div>";
       });
       h += '<div class="btn-row"><button type="button" class="btn btn-ghost" data-action="courses-home">← Tous les cours</button>' +

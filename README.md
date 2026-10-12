@@ -70,7 +70,8 @@ Les fichiers de `certs/<id>/` déclarent des constantes globales. Écrivez les c
 - `o` doit appartenir au domaine `d` ; le texte entre accents graves `` `…` `` s’affiche comme du code, tout le reste est échappé.
 - L’identifiant d’une question est calculé à partir de son énoncé : modifier un énoncé revient à créer une nouvelle question.
 - Chaque domaine doit compter au moins deux fois son `examCount` en questions.
-- Les sections de cours acceptent `p` (texte ou tableau de paragraphes), `points`, `code`, `lvl` (« essentiel », « avancé », « complément ») et `extra: true` (« Hors programme »).
+- Les sections de cours acceptent `p` (texte ou tableau de paragraphes), `points`, `code`, `blocks` (contenu ordonné : liste d’objets `{p}`, `{points}` ou `{code}`, affichés dans l’ordre), `lvl` (« essentiel », « avancé », « complément ») et `extra: true` (« Hors programme »).
+- Les sections « En pratique » des cours CCAR-F et CCDV-F sont générées à partir des blocs du même nom dans `docs/programme-*.md` : modifiez d’abord le programme, puis régénérez les cours.
 
 ## Application installable (PWA)
 
