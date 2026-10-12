@@ -10,17 +10,17 @@ Application web de préparation à plusieurs certifications Claude. Chacune prop
 |---|---|---|---|
 | **Claude Certified Architect – Foundations** (CCAR-F) | Disponible | 5 domaines, 30 objectifs, 30 cours, 300 questions sur 6 scénarios, 40 fiches pratiques | Examen blanc : 60 questions, 120 min, 4 scénarios sur 6, score estimé sur 100–1 000, seuil 720 |
 | **Claude Code — Certification & Practice** | Disponible (parcours interne, non officiel) | 10 domaines, 31 objectifs, 30 cours, 265 questions, 63 fiches pratiques | Évaluation : 40 questions, 60 min, seuil 70 % |
-| **Claude Certified Developer – Foundations** (CCDV-F) | Bientôt disponible | Guide d’examen officiel dans `docs/` ; contenu à produire | 53 questions, 120 min, seuil 720 / 1 000 (format officiel) |
+| **Claude Certified Developer – Foundations** (CCDV-F) | Disponible | 8 domaines, 25 objectifs, 25 cours, 253 questions, 31 fiches pratiques | Examen blanc : 53 questions, 120 min, score estimé sur 100–1 000, seuil 720 |
 
 ## Utilisation
 
 Double-cliquez sur `index.html`. L’application fonctionne en `file://`, sans installation ni build ; seule la police Google Fonts est chargée depuis Internet.
 
 - La **page d’accueil** liste les certifications, avec l’état de votre progression et un raccourci « Reprendre » vers la dernière utilisée.
-- Le **sélecteur** de l’en-tête permet de changer de certification à tout moment. L’adresse d’une certification est `index.html?cert=<id>` (`ccar-f`, `claude-code`).
+- Le **sélecteur** de l’en-tête permet de changer de certification à tout moment. L’adresse d’une certification est `index.html?cert=<id>` (`ccar-f`, `ccdv-f`, `claude-code`).
 - Dans une certification, six onglets : **Programme**, **Cours**, **Entraînement**, **Examen blanc** (ou **Évaluation**), **Pratique**, **Progression**. Au clavier : A à E pour répondre, Entrée pour valider ou passer à la suite.
 
-La progression est enregistrée dans le navigateur (`localStorage`), avec une clé par certification : `ccar-f-prep-v1`, `claude-code-practice-v1`. Les progressions des anciennes versions sont donc conservées. Le bouton « Réinitialiser » n’efface que la certification ouverte.
+La progression est enregistrée dans le navigateur (`localStorage`), avec une clé par certification : `ccar-f-prep-v1`, `ccdv-f-prep-v1`, `claude-code-practice-v1`. Les progressions des anciennes versions sont donc conservées. Le bouton « Réinitialiser » n’efface que la certification ouverte.
 
 ## Structure
 
@@ -28,8 +28,9 @@ La progression est enregistrée dans le navigateur (`localStorage`), avec une cl
 index.html, style.css, app.js     ← moteur commun (aucun contenu pédagogique)
 certs/index.js                    ← registre des certifications
 certs/ccar-f/                     ← domains, programme, courses, questions, practice, scenarios
+certs/ccdv-f/                     ← domains, programme, courses, questions, practice
 certs/claude-code/                ← domains, programme, courses, questions, practice
-docs/                             ← guides d’examen officiels (CCAR-F, CCDV-F) et programme détaillé CCAR-F
+docs/                             ← guides d’examen officiels (CCAR-F, CCDV-F) et programmes détaillés traduits
 prompts/                          ← prompts remplis qui ont servi à générer chaque certification
 PROMPT-GENERATEUR.md              ← modèle de prompt pour ajouter une certification
 manifest.webmanifest, sw.js, icons/
@@ -41,7 +42,7 @@ manifest.webmanifest, sw.js, icons/
 
 1. Créez une branche, remplissez les paramètres de [`PROMPT-GENERATEUR.md`](PROMPT-GENERATEUR.md) et placez le guide ou le programme dans `docs/`.
 2. Donnez le prompt à Claude Code : il produit `certs/<id>/` et l’entrée du registre.
-3. Ajoutez les nouveaux fichiers à la liste `ASSETS` de `sw.js` et incrémentez le nom du cache (`claude-certs-v1` → `v2`).
+3. Ajoutez les nouveaux fichiers à la liste `ASSETS` de `sw.js` et incrémentez le nom du cache (`claude-certs-v2` → `v3`).
 
 Entrée minimale du registre (voir les entrées complètes dans `certs/index.js`) :
 

@@ -55,12 +55,27 @@ const CERTS = [
   },
   {
     id: "ccdv-f",
-    status: "soon",
+    status: "available",
     official: true,
     code: "CCDV-F",
     name: "Claude Certified Developer – Foundations",
     short: "Developer Foundations",
-    summary: "Construire, intégrer et livrer des applications, agents et workflows avec Claude. Le guide d’examen est disponible dans docs/ ; le contenu de préparation reste à produire.",
+    storeKey: "ccdv-f-prep-v1",
+    files: ["domains", "programme", "courses", "questions", "practice"],
+    summary: "Construire, intégrer et livrer des applications, agents et workflows avec l’API Claude, Claude Code, les outils et le MCP.",
+    hero: {
+      kicker: "Claude Certified Developer – Foundations · Préparation",
+      title: "Construire. Intégrer. Livrer.",
+      lead: "Préparez l’examen CCDV-F : agents et workflows, intégration de l’API Claude, Claude Code, choix du modèle et maîtrise des coûts, prompt et contexte, sécurité, outils et MCP.",
+      format: "Examen : 53 questions · 120 min · réussite à 720 / 1 000 — préparation indépendante, non affiliée à Anthropic"
+    },
+    exam: {
+      label: "Examen blanc", title: "Examen blanc CCDV-F", minutes: 120, scoring: "scaled", pass: 720, scenarioCount: 0,
+      intro: "Cet examen blanc reproduit le format décrit dans le guide d’examen officiel (version 1.0, juillet 2026) : 53 questions réparties selon le poids des 8 domaines. Il reste un <b>entraînement non officiel</b> : seul l’examen surveillé d’Anthropic délivre la certification."
+    },
+    programmeNote: "Chaque objectif correspond à une compétence pondérée du guide d’examen CCDV-F ; le poids indiqué est sa part de l’examen.",
+    practiceNote: "Ces fiches se réalisent avec l’API Claude (SDK Python ou TypeScript), Claude Code et des serveurs MCP. Évaluez-vous sur vos choix de conception (simplicité, coût, sécurité, vérification), pas seulement sur le fait que « ça marche ».",
+    footer: "Claude Certified Developer est une certification d’Anthropic ; seuls l’examen officiel et son guide font foi. Contenu fondé sur le guide d’examen CCDV-F version 1.0 (juillet 2026) et sur la documentation officielle, susceptibles d’évoluer.",
     facts: ["53 questions", "120 min", "8 domaines", "Réussite 720 / 1 000"]
   }
 ];
