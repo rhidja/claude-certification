@@ -1,7 +1,7 @@
 {
-  "name": "Architect Foundations — Préparation CCAR-F",
-  "short_name": "CCAR-F Prep",
-  "description": "Préparation indépendante et non officielle à la certification Claude Certified Architect – Foundations : cours, questions, examen blanc et pratique.",
+  "name": "Préparation aux certifications Claude",
+  "short_name": "Claude Prep",
+  "description": "Préparation indépendante et non officielle aux certifications Claude : cours, questions, examens blancs et pratique.",
   "lang": "fr",
   "dir": "ltr",
   "id": "./",

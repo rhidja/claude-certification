@@ -2,14 +2,18 @@
 
 Ce prompt sert à créer une application du même genre qu'**AWS Ready** ou **PASS Maths & Biostats** ou **Chimie PASS Médecine**pour un autre sujet : une autre certification (Azure, GCP, Kubernetes, Scrum…), un langage, une matière scolaire, le code de la route, etc.
 
-**Utilisation :**
+**Utilisation dans ce projet multi-certification :**
 
-1. Crée un dossier vide et ouvre-le avec Claude Code.
-2. Remplis la section « Paramètres » ci-dessous.
-3. *(Optionnel mais recommandé)* Fournis ton **programme détaillé** d'une de ces deux façons :
-   - colle-le dans la section « Programme détaillé » à la fin du prompt ;
-   - ou dépose-le dans le dossier (ex. `programme.md`, `.txt`, ou le PDF du guide d'examen officiel) et indique son nom dans les paramètres.
+Ce dépôt réunit plusieurs certifications dans une seule application (page d’accueil, sélecteur, progression séparée). Ce prompt sert à **ajouter une nouvelle certification** dans `certs/<id>/` sans toucher au moteur commun.
+
+1. Ouvre ce dépôt avec Claude Code, sur une branche dédiée.
+2. Remplis la section « Paramètres » ci-dessous. Deux exemples remplis servent de modèles : `prompts/claude-code.md` (parcours interne) et `prompts/ccar-f.md` (certification officielle avec scénarios).
+3. Fournis le **programme détaillé** : le PDF du guide d’examen dans `docs/`, ou un fichier `docs/programme-<id>.md` au format de `docs/programme-ccar-f.md`.
 4. Copie tout ce qui se trouve entre les deux lignes `=====` et colle-le dans Claude Code.
+
+Le programme détaillé fait foi. Sans programme, l’IA en rédige un et te le soumet avant de produire le contenu.
+
+=====` et colle-le dans Claude Code.
 
 Le programme détaillé peut être le plan officiel de l'examen, le syllabus d'un cours, ou ta propre liste de notions. Tant qu'il est découpé en domaines, puis en objectifs, avec les notions de chaque objectif, l'IA s'en sert comme référence unique. Le format conseillé est décrit à la fin du prompt, mais un copier-coller brut fonctionne aussi.
 
@@ -21,86 +25,29 @@ Crée dans ce dossier une application web d'apprentissage selon le cahier des ch
 
 ## Paramètres
 
-* **Sujet** : Claude Certified Architect – Foundations (CCAR-F) — concevoir des applications de production avec Claude : Claude Agent SDK, API Claude, Claude Code et Model Context Protocol (MCP).
+* **Identifiant de la certification** : *(court, en minuscules, ex. `ccdv-f`)* — dossier `certs/<id>/`
 
-* **Examen ou objectif visé** : réussir l’examen officiel **Claude Certified Architect – Foundations** (code CCAR-F) du Claude Certification Program d’Anthropic, selon le guide d’examen version 1.0 (juillet 2026).
+* **Sujet** : *(ex. Claude Certified Developer – Foundations)*
 
-* **Nom de l'application** : Architect Foundations — Préparation CCAR-F
+* **Examen ou objectif visé** : *(examen officiel et version de son guide, ou objectif d’apprentissage)*
 
-* **Langue du contenu et de l'interface** : français. Les termes techniques (`stop_reason`, `tool_choice`, `.mcp.json`, `context: fork`…) restent en anglais, tels qu’ils apparaissent dans le guide.
+* **Nom court** (sélecteur et page d’accueil) : *(ex. Developer Foundations)*
 
-* **Public** : architecte de solutions ou développeur senior qui conçoit et met en production des applications avec Claude (environ 6 mois d’expérience pratique de l’API Claude, de l’Agent SDK, de Claude Code et du MCP).
+* **Langue du contenu** : français (termes techniques laissés en anglais quand le guide les emploie)
 
-* **Domaines et pondération** (blueprint officiel) :
+* **Public** : *(profil et expérience attendus)*
 
-  1. Architecture agentique et orchestration — 27 %
-  2. Conception d’outils et intégration MCP — 18 %
-  3. Configuration et workflows Claude Code — 20 %
-  4. Prompt engineering et sortie structurée — 20 %
-  5. Gestion du contexte et fiabilité — 15 %
+* **Domaines et pondération** : *(repris du guide officiel s’il existe)*
 
-* **Format de l'examen réel** (connu avec certitude, section 3 du guide) : 60 questions à choix unique ou à réponses multiples (chaque question indique combien de réponses choisir), 120 minutes, **4 scénarios tirés au hasard parmi 6**, examen surveillé, score de 100 à 1 000, **réussite à 720**. L’examen blanc reproduit ce format : 60 questions, 120 minutes, 4 scénarios tirés parmi 6, score estimé sur 100–1 000 par la formule linéaire `100 + 900 × taux de bonnes réponses`, seuil 720, présenté comme une **estimation** (le vrai score est mis à l’échelle par Anthropic). Répartition (`examCount`) proportionnelle à la pondération : 16 / 11 / 12 / 12 / 9.
+* **Format de l'examen réel** : *(nombre de questions, durée, scénarios éventuels, seuil et échelle de score)*. Si le format officiel est connu avec certitude, l’épreuve d’entraînement le reproduit (`exam.scoring: "scaled"` pour une échelle 100–1 000) ; sinon elle s’appelle « Évaluation » et se présente comme une simulation interne (`exam.scoring: "percent"`).
 
-* **Volume visé** : 30 cours (un par objectif) + 300 questions + 30 exercices pratiques (un par objectif) + 6 missions (une par scénario d’examen) + 4 projets (les 4 exercices de préparation de la section 8 du guide).
+* **Volume visé** : *(cours, questions, exercices, missions, projets)*
 
-* **Formules mathématiques** : non
+* **Programme détaillé** : *(chemin du guide ou du programme dans `docs/`)*
 
-* **Application installable** : oui
+* **Respect du programme** : *(strict, ou compléments autorisés)* — chaque notion est identifiée comme « essentiel », « avancé » ou « complément ». Ne jamais présenter comme officiel un examen ou un titre qui ne l’est pas.
 
-* **Couleur principale** : charte graphique de Claude (orange terre cuite `#d97757` sur fond crème `#faf9f5`, texte `#141413`), voir la section « Design »
-
-* **Programme détaillé** : voir le fichier `programme-ccar-f.md` (traduction fidèle du blueprint du guide d’examen : domaines, scénarios, 30 objectifs avec notions clés, connaissances et compétences, technologies, sujets hors programme, exercices de préparation). Guide original : https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542750%2FClaude+Certified+Architect+%E2%80%93+Foundations+Exam+Guide.pdf
-
-* **Respect du programme** : **strict pour les questions** (aucune question sur un sujet de la liste « Hors programme » du guide, ni sur une notion absente du programme) ; compléments autorisés dans les cours, étiquetés « Hors programme » (`extra: true`). Chaque notion est identifiée comme « essentiel », « avancé » ou « complément ». L’application est une **préparation indépendante** : elle ne doit jamais se présenter comme officielle ni reproduire les questions d’exemple du guide. L’en-tête, le pied de page et le README indiquent « Préparation indépendante et non officielle, non affiliée à Anthropic. Claude Certified Architect est une certification d’Anthropic ; seuls l’examen officiel et son guide font foi. »
-
-
-## Plan de couverture validé
-
-Plan calculé à partir du programme détaillé et **validé** : ne le soumets pas à nouveau, passe directement à la production du contenu. Les questions de chaque domaine sont proportionnelles à la pondération (300 au total), puis réparties entre objectifs selon le nombre de connaissances et compétences. Module Cn = objectif n dans l’ordre du programme.
-
-| Obj. | Intitulé | Module | Q |
-|---|---|---|---|
-| **D1 Architecture agentique et orchestration — 27 %** ||| **81** |
-| 1.1 | Concevoir et implémenter des boucles agentiques | C1 | 12 |
-| 1.2 | Orchestrer des systèmes multi-agents coordinateur / sous-agents | C2 | 13 |
-| 1.3 | Configurer l’invocation des sous-agents, le passage de contexte et leur lancement | C3 | 12 |
-| 1.4 | Workflows multi-étapes avec contrôle et transmission | C4 | 12 |
-| 1.5 | Hooks de l’Agent SDK : interception et normalisation | C5 | 11 |
-| 1.6 | Stratégies de décomposition des workflows complexes | C6 | 11 |
-| 1.7 | État des sessions, reprise et dérivation | C7 | 10 |
-| **D2 Conception d’outils et intégration MCP — 18 %** ||| **54** |
-| 2.1 | Interfaces d’outils : descriptions et limites claires | C8 | 12 |
-| 2.2 | Réponses d’erreur structurées pour les outils MCP | C9 | 11 |
-| 2.3 | Répartition des outils entre agents et `tool_choice` | C10 | 11 |
-| 2.4 | Intégrer des serveurs MCP dans Claude Code et les agents | C11 | 11 |
-| 2.5 | Outils intégrés (Read, Write, Edit, Bash, Grep, Glob) | C12 | 9 |
-| **D3 Configuration et workflows Claude Code — 20 %** ||| **60** |
-| 3.1 | Hiérarchie, portée et organisation des CLAUDE.md | C13 | 11 |
-| 3.2 | Commandes slash et skills personnalisés | C14 | 11 |
-| 3.3 | Règles par chemin et chargement conditionnel | C15 | 9 |
-| 3.4 | Plan mode ou exécution directe | C16 | 10 |
-| 3.5 | Raffinement itératif | C17 | 9 |
-| 3.6 | Claude Code dans les pipelines CI/CD | C18 | 10 |
-| **D4 Prompt engineering et sortie structurée — 20 %** ||| **60** |
-| 4.1 | Critères explicites, précision et faux positifs | C19 | 10 |
-| 4.2 | Few-shot prompting | C20 | 10 |
-| 4.3 | Sortie structurée par tool use et schémas JSON | C21 | 12 |
-| 4.4 | Validation, nouvelle tentative et boucles de retour | C22 | 10 |
-| 4.5 | Traitement par lots (Message Batches API) | C23 | 9 |
-| 4.6 | Revue multi-instances et multi-passes | C24 | 9 |
-| **D5 Gestion du contexte et fiabilité — 15 %** ||| **45** |
-| 5.1 | Préserver l’information critique dans les longues interactions | C25 | 9 |
-| 5.2 | Escalade et résolution des ambiguïtés | C26 | 9 |
-| 5.3 | Propagation des erreurs dans les systèmes multi-agents | C27 | 7 |
-| 5.4 | Contexte et exploration d’une grande base de code | C28 | 7 |
-| 5.5 | Revue humaine et calibration de la confiance | C29 | 7 |
-| 5.6 | Provenance de l’information et incertitude | C30 | 6 |
-
-**Scénarios** (`data/scenarios.js`) : les 6 scénarios du guide (S1 à S6, voir `programme-ccar-f.md`). Chaque question est rattachée à un scénario (`s`) cohérent avec les domaines principaux de ce scénario, et son énoncé est une mise en situation dans ce contexte. Viser au moins 40 questions par scénario.
-
-**Pratique** (`data/practice.js`) : 30 exercices (un par objectif), 6 missions (une par scénario, réalisées avec l’API, l’Agent SDK ou Claude Code) et 4 projets reprenant les 4 exercices de préparation de la section 8 du guide.
-
-**Exactitude** : le guide d’examen fait foi pour le contenu évalué (noms d’options, de champs et de fichiers : `fork_session`, `--json-schema`, `.claude/rules/` avec `paths`, `context: fork`, outil Task, `allowedTools`, `isError`…). N’invente aucun chiffre, aucune option ni aucun comportement absent du guide ou de la documentation officielle. Si la documentation actuelle diffère du guide (un outil renommé, par exemple), enseigne la version du guide et signale l’écart dans une section « complément » du cours.
+* **Formules mathématiques** : non · **Application installable** : oui (déjà en place dans le moteur commun) · **Couleur principale** : charte graphique de Claude (déjà en place)
 
 
 ## Avant de coder
@@ -127,40 +74,50 @@ Plan calculé à partir du programme détaillé et **validé** : ne le soumets p
 
 ## Structure des fichiers
 
+Le moteur est commun à toutes les certifications ; une certification n’ajoute que des données.
+
 ```
-index.html
-style.css
-app.js              ← logique uniquement, aucun contenu pédagogique
-data/domains.js     ← domaines
-data/programme.js   ← objectifs du programme détaillé
-data/courses.js     ← cours
-data/questions.js   ← banque de questions
-data/practice.js    ← exercices, missions et projets pratiques
-data/scenarios.js   ← scénarios d’examen (si l’examen est organisé en scénarios)
+index.html, style.css, app.js     ← moteur commun : aucun contenu pédagogique, ne pas dupliquer
+certs/index.js                    ← registre des certifications (une entrée par certification)
+certs/<id>/domains.js             ← domaines
+certs/<id>/programme.js           ← objectifs du programme détaillé
+certs/<id>/courses.js             ← cours
+certs/<id>/questions.js           ← banque de questions
+certs/<id>/practice.js            ← exercices, missions et projets pratiques
+certs/<id>/scenarios.js           ← scénarios d’examen (seulement si l’examen en comporte)
+docs/                             ← guides d’examen et programmes détaillés
+prompts/<id>.md                   ← copie remplie de ce prompt, pour mémoire
+manifest.webmanifest, sw.js, icons/
 README.md
-vendor/katex/       ← si formules : KaTeX et ses polices
-manifest.webmanifest, sw.js, icons/   ← si PWA
 ```
 
-Les fichiers de `data/` sont chargés par des balises `<script>` classiques, avant `app.js`, et déclarent des constantes globales. Utilise des chaînes entre guillemets doubles et l'apostrophe typographique ’ dans les textes, pour éviter les problèmes d'échappement.
+Les fichiers de `certs/<id>/` déclarent des constantes globales (`DOMAINS`, `OBJECTIVES`, `COURSES`, `QUESTIONS`, `PRACTICE`, `SCENARIOS`). L’application ne charge que ceux de la certification choisie (`index.html?cert=<id>`), après `certs/index.js`. Utilise des chaînes entre guillemets doubles et l'apostrophe typographique ’ dans les textes, pour éviter les problèmes d'échappement.
+
+### Intégration dans l’application multi-certification
+
+1. Ajoute l’entrée de la certification dans `certs/index.js`, sur le modèle des entrées existantes : `id`, `status: "available"`, `official`, `code`, `name`, `short`, `storeKey` (clé `localStorage` propre, ex. `<id>-prep-v1`), `files` (avec `"scenarios"` seulement s’il y en a), `summary`, `hero` (`kicker`, `title` en trois temps, `lead`, `format`), `exam` (`label`, `title`, `minutes`, `scoring`, `pass`, `scenarioCount`, `intro`), `programmeNote`, `practiceNote`, `footer`, `facts`. Si l’entrée existait avec `status: "soon"`, complète-la.
+2. Le nombre de questions de l’épreuve est la somme des `examCount` de `domains.js`.
+3. Ajoute chaque nouveau fichier à la liste `ASSETS` de `sw.js` et incrémente le nom du cache.
+4. Ne modifie `app.js`, `index.html` ou `style.css` que si la certification exige une fonctionnalité réellement nouvelle ; dans ce cas, garde le comportement des certifications existantes inchangé et teste-les aussi.
+5. Ajoute la certification aux tableaux du `README.md` et enregistre une copie remplie de ce prompt dans `prompts/<id>.md`.
 
 ### Formats de données
 
 ```js
-// data/domains.js
+// certs/<id>/domains.js
 // examCount : nombre de questions tirées dans ce domaine pour un examen blanc.
 const DOMAINS = [
   { id: 1, name: "Nom du domaine", weight: 25, examCount: 11 }
 ];
 
-// data/programme.js
+// certs/<id>/programme.js
 // Un objectif par entrée, avec l'identifiant et l'intitulé du programme.
 // notions : notions à maîtriser, reprises du programme.
 const OBJECTIVES = [
   { id: "1.1", d: 1, title: "Intitulé de l’objectif", notions: ["Notion A", "Notion B"] }
 ];
 
-// data/courses.js
+// certs/<id>/courses.js
 // d = id du domaine, o = objectifs traités par le module.
 // Les textes de cours peuvent contenir du <b> pour les notions clés.
 const COURSES = [
@@ -176,7 +133,7 @@ const COURSES = [
   }
 ];
 
-// data/questions.js
+// certs/<id>/questions.js
 // o = objectif évalué par la question ; s = scénario de la question (si scénarios).
 // c = index de la bonne réponse, ou tableau d'index pour une question à réponses multiples.
 const QUESTIONS = [
@@ -184,7 +141,7 @@ const QUESTIONS = [
   { d: 2, o: "2.3", s: "S3", q: "Énoncé ? (Choisissez 2 réponses)", a: ["A", "B", "C", "D", "E"], c: [0, 3], e: "Explication." }
 ];
 
-// data/scenarios.js (si l’examen est organisé en scénarios)
+// certs/<id>/scenarios.js (si l’examen est organisé en scénarios)
 // d = domaines principaux du scénario ; context = mise en situation affichée au-dessus des questions.
 const SCENARIOS = [
   { id: "S1", title: "Titre du scénario", d: [1, 2, 5], context: "Mise en situation commune à toutes les questions du scénario." }
@@ -192,7 +149,7 @@ const SCENARIOS = [
 ```
 
 ```js
-// data/practice.js
+// certs/<id>/practice.js
 // type : "exercice" | "mission" | "projet" ; level : "essentiel" | "avancé" | "complément".
 // minutes : durée conseillée (chronomètre). steps : étapes ; criteria : critères de réussite auto-évalués.
 // prompt : exemple de prompt à donner à Claude Code ; solution : démarche corrigée (affichée à la demande).
@@ -327,7 +284,7 @@ Navigation par onglets : **Programme**, **Cours**, **Entraînement**, **Examen b
 - Icônes dans `icons/` : `icon.svg` (favicon), `icon-192.png`, `icon-512.png`, `maskable-512.png` (motif dans la zone de sécurité centrale de 80 %), `apple-touch-icon.png` (180 px, fond opaque). Génère les PNG à partir du SVG avec un script (Python, ImageMagick ou Chromium sans interface).
 - `index.html` : `theme-color`, métadonnées `apple-mobile-web-app-*`, `apple-touch-icon`. Le `<link rel="manifest">` n'est ajouté par script que hors `file://` (en `file://`, Chrome le refuse et affiche une erreur CORS).
 - `sw.js` :
-  - à l'installation, met en cache une liste `ASSETS` de **tous** les fichiers de l'application (HTML, CSS, JS, `data/`, icônes, KaTeX et chacune de ses polices) ;
+  - à l'installation, met en cache une liste `ASSETS` de **tous** les fichiers de l'application (HTML, CSS, JS, `certs/`, icônes, KaTeX et chacune de ses polices) ;
   - fichiers de l'application en « réseau d'abord, cache en secours », pour qu'une mise à jour du contenu soit visible au prochain chargement en ligne ; navigation hors ligne vers `index.html` ;
   - polices Google en « cache d'abord », dans un cache séparé ;
   - à l'activation, suppression des anciens caches ; nom de cache versionné (`nom-app-v1`), à incrémenter quand la liste `ASSETS` change.
@@ -364,7 +321,7 @@ Navigation par onglets : **Programme**, **Cours**, **Entraînement**, **Examen b
 
 ## Vérifications avant de terminer
 
-1. Charge les fichiers de `data/` avec Node et vérifie :
+1. Charge les fichiers de `certs/<id>/` avec Node et vérifie (et relance les mêmes contrôles sur les autres certifications) :
    - le nombre de cours et de questions par domaine ;
    - chaque domaine contient au moins `examCount` questions ;
    - chaque index de `c` est valide ;
@@ -399,11 +356,6 @@ Navigation par onglets : **Programme**, **Cours**, **Entraînement**, **Examen b
 
 ## Programme détaillé
 
-Voir le fichier **`programme-ccar-f.md`** à la racine du dossier. Lis-le en entier : il contient le format de l’examen, les 5 domaines et leur pondération, les 6 scénarios, les 30 objectifs (*task statements*) avec leurs notions clés, connaissances et compétences, l’annexe des technologies, la liste des sujets hors programme et les 4 exercices de préparation.
-
-- Les `notions` de `data/programme.js` reprennent les **Notions clés** de chaque objectif.
-- Les blocs **En pratique** (explications, exemples, pièges classiques) sont des compléments pédagogiques hors guide : utilise-les pour enrichir les cours et les explications des questions, mais ils ne définissent pas ce qui est évalué.
-- Chaque connaissance et chaque compétence doit être expliquée dans le cours de l’objectif et testée par au moins une question.
-- Aucun sujet de la liste « Hors programme » ne doit faire l’objet d’une question.
+*(Indique le fichier dans `docs/`, ou colle le programme ici. Format conseillé : celui de `docs/programme-ccar-f.md` — domaines pondérés, objectifs numérotés avec notions clés, connaissances et compétences, éventuels scénarios, sujets hors programme. Les blocs « En pratique » de ce fichier sont des compléments pédagogiques qui ne définissent pas ce qui est évalué.)*
 
 =====

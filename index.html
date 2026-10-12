@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Architect Foundations — Préparation CCAR-F</title>
-  <meta name="description" content="Préparation indépendante et non officielle à la certification Claude Certified Architect – Foundations (CCAR-F) : cours, questions, examen blanc et pratique.">
+  <title>Préparation aux certifications Claude</title>
+  <meta name="description" content="Préparation indépendante et non officielle aux certifications Claude : cours, questions, examens blancs et pratique.">
   <meta name="theme-color" content="#141413">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="CCAR-F Prep">
+  <meta name="apple-mobile-web-app-title" content="Claude Prep">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -21,21 +21,22 @@
   <header class="site-header">
     <div class="wrap">
       <div class="topbar">
-        <span class="brand"><span class="brand-mark" aria-hidden="true">&gt;_</span> CCAR-F · Préparation</span>
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">&gt;_</span> Certifications Claude</a>
         <span class="topbar-actions">
+          <label class="cert-select-wrap"><span class="sr-only">Certification</span><select id="cert-select" aria-label="Choisir une certification"></select></label>
           <button type="button" class="btn btn-primary btn-small" id="install-btn" hidden>Installer l’app</button>
           <button type="button" class="btn btn-ghost btn-small" data-action="reset">Réinitialiser</button>
         </span>
       </div>
-      <p class="kicker">Claude Certified Architect – Foundations · Préparation</p>
-      <h1>Concevoir. Orchestrer. Fiabiliser.</h1>
-      <p class="lead">Préparez l’examen CCAR-F : architecture agentique, conception d’outils et MCP, configuration de Claude Code, prompt engineering et sortie structurée, gestion du contexte et fiabilité.</p>
-      <p class="format">Examen : 60 questions · 120 min · 4 scénarios sur 6 · réussite à 720 / 1 000 — préparation indépendante, non affiliée à Anthropic</p>
+      <p class="kicker" id="hero-kicker">Préparation aux certifications Claude</p>
+      <h1 id="hero-title">Choisir. Apprendre. Réussir.</h1>
+      <p class="lead" id="hero-lead">Choisissez une certification : cours, questions, examen blanc et fiches pratiques, avec une progression enregistrée séparément pour chacune.</p>
+      <p class="format" id="hero-format">Applications de préparation indépendantes, non affiliées à Anthropic</p>
       <nav class="tabs" role="tablist" aria-label="Sections">
         <button type="button" role="tab" data-tab="programme">Programme</button>
         <button type="button" role="tab" data-tab="courses">Cours</button>
         <button type="button" role="tab" data-tab="train">Entraînement</button>
-        <button type="button" role="tab" data-tab="exam">Examen blanc</button>
+        <button type="button" role="tab" data-tab="exam">Examen</button>
         <button type="button" role="tab" data-tab="practice">Pratique</button>
         <button type="button" role="tab" data-tab="progress">Progression</button>
       </nav>
@@ -46,17 +47,12 @@
 
   <footer class="site-footer">
     <div class="wrap">
-      Préparation indépendante et non officielle, non affiliée à Anthropic. Claude Certified Architect est une certification d’Anthropic ; seuls l’examen officiel et son guide font foi.
-      Contenu fondé sur le guide d’examen CCAR-F version 1.0 (juillet 2026), susceptible d’évoluer.
+      Préparation indépendante et non officielle, non affiliée à Anthropic. Claude est une marque d’Anthropic.
+      <span id="footer-cert">Les certifications officielles sont délivrées uniquement par Anthropic ; seuls les examens officiels et leurs guides font foi.</span>
     </div>
   </footer>
 
-  <script src="data/domains.js"></script>
-  <script src="data/programme.js"></script>
-  <script src="data/courses.js"></script>
-  <script src="data/questions.js"></script>
-  <script src="data/practice.js"></script>
-  <script src="data/scenarios.js"></script>
+  <script src="certs/index.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
