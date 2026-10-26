@@ -1,0 +1,17 @@
+rules_version = '2';
+
+// Règles de sécurité Firestore de la synchronisation (sync.js).
+// Chaque utilisateur connecté ne peut lire et écrire que ses propres documents de progression.
+// À copier dans la console Firebase : Firestore Database → Règles → Publier.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{uid}/progress/{storeKey} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['data', 'updatedAt'])
+        && request.resource.data.data is string
+        && request.resource.data.data.size() < 500000
+        && request.resource.data.updatedAt is int;
+    }
+  }
+}
