@@ -60,7 +60,7 @@
         "</div>";
     });
     h += "</div>";
-    h += '<p class="small muted" style="margin-top:20px">La progression est enregistrée séparément pour chaque certification, dans ce navigateur.</p>';
+    h += '<p class="small muted" style="margin-top:20px">La progression est enregistrée séparément pour chaque certification, dans ce navigateur. Utilisez « Synchroniser » pour la retrouver sur tous vos appareils.</p>';
     document.getElementById("view").innerHTML = h;
   }
 
@@ -192,9 +192,12 @@
 
     function save() {
       try { window.localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) { /* ignoré */ }
+      if (window.CloudSync) window.CloudSync.saved(STORE_KEY);
     }
 
     var state = load();
+    // Version plus récente reçue d'un autre appareil : on recharge l'état et on réaffiche.
+    if (window.CloudSync) window.CloudSync.watch(STORE_KEY, function () { state = load(); render(); });
 
     function recordAnswer(qid, ok) {
       var prev = state.answers[qid];
@@ -1102,6 +1105,7 @@
   setupSelector(CERT);
   if (!CERT) {
     renderHome();
+    if (window.CloudSync) window.CloudSync.onChange(renderHome);
   } else {
     document.body.classList.add("is-cert");
     loadScripts(CERT.files.map(function (f) { return "certs/" + CERT.id + "/" + f + ".js"; }), function () { runApp(CERT); });

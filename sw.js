@@ -1,6 +1,6 @@
 /* Service worker de l’application de préparation aux certifications Claude.
    Incrémenter CACHE à chaque ajout ou suppression de fichier dans ASSETS. */
-const CACHE = "claude-certs-v2";
+const CACHE = "claude-certs-v3";
 const FONT_CACHE = "claude-certs-fonts-v1";
 
 const ASSETS = [
@@ -8,6 +8,7 @@ const ASSETS = [
   "index.html",
   "style.css",
   "app.js",
+  "sync.js",
   "manifest.webmanifest",
   "certs/index.js",
   "certs/ccar-f/domains.js",

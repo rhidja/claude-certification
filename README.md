@@ -20,12 +20,13 @@ Double-cliquez sur `index.html`. L’application fonctionne en `file://`, sans i
 - Le **sélecteur** de l’en-tête permet de changer de certification à tout moment. L’adresse d’une certification est `index.html?cert=<id>` (`ccar-f`, `ccdv-f`, `claude-code`).
 - Dans une certification, six onglets : **Programme**, **Cours**, **Entraînement**, **Examen blanc** (ou **Évaluation**), **Pratique**, **Progression**. Au clavier : A à E pour répondre, Entrée pour valider ou passer à la suite.
 
-La progression est enregistrée dans le navigateur (`localStorage`), avec une clé par certification : `ccar-f-prep-v1`, `ccdv-f-prep-v1`, `claude-code-practice-v1`. Les progressions des anciennes versions sont donc conservées. Le bouton « Réinitialiser » n’efface que la certification ouverte.
+La progression est enregistrée dans le navigateur (`localStorage`), avec une clé par certification : `ccar-f-prep-v1`, `ccdv-f-prep-v1`, `claude-code-practice-v1`. Les progressions des anciennes versions sont donc conservées. Le bouton « Réinitialiser » n’efface que la certification ouverte (et, si la synchronisation est active, sur tous les appareils).
 
 ## Structure
 
 ```
 index.html, style.css, app.js     ← moteur commun (aucun contenu pédagogique)
+sync.js, firestore.rules          ← synchronisation facultative entre appareils (Firebase)
 certs/index.js                    ← registre des certifications
 certs/ccar-f/                     ← domains, programme, courses, questions, practice, scenarios
 certs/ccdv-f/                     ← domains, programme, courses, questions, practice
@@ -81,3 +82,19 @@ L’installation nécessite une adresse **https** (ou `localhost`) ; en `file://
 - **Android / ordinateur (Chrome, Edge)** : bouton « Installer l’app » de l’en-tête ou menu du navigateur.
 - **iPhone / iPad (Safari)** : Partager → « Sur l’écran d’accueil ».
 - **Tester en local** : `python3 -m http.server 8000`, puis `http://localhost:8000/`.
+
+## Synchronisation entre appareils (Firebase, plan gratuit Spark)
+
+Le bouton « Synchroniser » de l’en-tête connecte un compte Google et copie la progression dans Firestore (`users/{uid}/progress/{clé de la certification}`). `localStorage` reste la source principale : l’application fonctionne sans compte et hors ligne. À chaque connexion, retour sur l’onglet ou enregistrement, la version la plus récente de chaque certification l’emporte.
+
+- Inactif en `file://` : la connexion Google exige `https` (GitHub Pages) ou `localhost`.
+- Le SDK Firebase n’est chargé qu’après le premier clic sur « Synchroniser ».
+- La configuration web dans `sync.js` est publique par nature ; la sécurité repose sur `firestore.rules`.
+
+Procédure complète de mise en ligne, de mise à jour et de dépannage : [docs/deploiement.md](docs/deploiement.md).
+
+Mise en place dans la console Firebase (une seule fois, sans carte bancaire) :
+
+1. **Authentication** → Méthode de connexion → activer **Google**.
+2. **Authentication** → Paramètres → Domaines autorisés → ajouter `rhidja.github.io` (`localhost` y est par défaut).
+3. **Firestore Database** → Créer une base (mode production), puis **Règles** → coller le contenu de `firestore.rules` → Publier.
