@@ -91,6 +91,8 @@ Le bouton « Synchroniser » de l’en-tête connecte un compte Google et copie 
 - Le SDK Firebase n’est chargé qu’après le premier clic sur « Synchroniser ».
 - La configuration web dans `sync.js` est publique par nature ; la sécurité repose sur `firestore.rules`.
 
+Procédure complète de mise en ligne, de mise à jour et de dépannage : [docs/deploiement.md](docs/deploiement.md).
+
 Mise en place dans la console Firebase (une seule fois, sans carte bancaire) :
 
 1. **Authentication** → Méthode de connexion → activer **Google**.
