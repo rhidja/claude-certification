@@ -95,6 +95,6 @@ Procédure complète de mise en ligne, de mise à jour et de dépannage : [docs/
 
 Mise en place dans la console Firebase (une seule fois, sans carte bancaire) :
 
-1. **Authentication** → Méthode de connexion → activer **Google**.
+1. **Authentication** → **Commencer**, puis Méthode de connexion → activer **Google**.
 2. **Authentication** → Paramètres → Domaines autorisés → ajouter `rhidja.github.io` (`localhost` y est par défaut).
-3. **Firestore Database** → Créer une base (mode production), puis **Règles** → coller le contenu de `firestore.rules` → Publier.
+3. **Firestore Database** → Créer une base (mode production), puis **Règles** → coller le contenu de `firestore.rules` → **Publier** (les règles par défaut refusent tout).
